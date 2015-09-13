@@ -16,9 +16,9 @@ $('table').each(function (i, elem){
             
             //return to parent tr & filter out all tags (h4, b, div, span) in the tr
             var raw_address = $(elem).parent().contents().not('h4').not('b').not('div').not('span').not(/\t/);
-            //get rid of extra space
+            //get rid of extra space (all tabs)
             var final_address = [raw_address.text().trim().replace(/\t/g, '/').split('//////')[0]];
-            
+            //print first line
             console.log(final_address[0]);
             
         });
