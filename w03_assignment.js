@@ -16,7 +16,7 @@ $('tbody').find('tr').each(function(i, elem){
     addresses.push(meetings.substring(0, meetings.indexOf(',')) + ', New York, NY');
 });
 
-console.log('all addresses obtained')
+console.log('all addresses obtained');
 
 // SETTING ENVIRONMENT VARIABLES (in Linux): 
 // export NEW_VAR="Content of NEW_VAR variable"
