@@ -9,14 +9,19 @@ var async = require('async'); // npm install async
 // SETTING ENVIRONMENT VARIABLES (in Linux): 
 // export NEW_VAR="Content of NEW_VAR variable"
 // printenv | grep NEW_VAR
-var apiKey = process.env.GMAKEY;
+var apiKey = process.env.API_KEY;
 
 var meetingsData = [];
-var addresses = fs.readFileSync('/home/ubuntu/workspace/data/meetings02');
+var addresses = JSON.parse(fs.readFileSync('/home/ubuntu/workspace/data/meetings02.txt'));
+
+function fixAddresses (oldAddress) {
+    var newAddress = oldAddress.substring(0, oldAddress.indexOf(',')) + ", New York, NY"; //start at begining and stop at first comma (no include), add NY,NY
+    return newAddress;
+}
 
 // eachSeries in the async module iterates over an array and operates on each item in the array in series
 async.eachSeries(addresses, function(value, callback) {
-    var apiRequest = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + value.split(' ').join('+') + '&key=' + apiKey;
+    var apiRequest = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + fixAddresses(value).split(' ').join('+') + '&key=' + apiKey;
     var thisMeeting = new Object;
     thisMeeting.address = value;
     request(apiRequest, function(err, resp, body) {
@@ -24,7 +29,7 @@ async.eachSeries(addresses, function(value, callback) {
         thisMeeting.latLong = JSON.parse(body).results[0].geometry.location;
         meetingsData.push(thisMeeting);
     });
-    setTimeout(callback, 2000);
+    setTimeout(callback, 200);
 }, function() {
-    console.log(meetingsData);
+    fs.writeFileSync('/home/ubuntu/workspace/data/geocodedMeetings.txt', JSON.stringify(meetingsData));
 });
