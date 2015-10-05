@@ -1,11 +1,4 @@
-// IN THE MONGO SHELL: 
-//   CREATE DATABASE citibike AND SWITCH TO IT WITH: 
-//      use citibike
-//   CREATE COLLECTION stations WITH: 
-//      db.createCollection('stations')
 var fs = require('fs');
-var request = require('request');
-var cheerio = require('cheerio');
 
 var meetingAddress = JSON.parse(fs.readFileSync('/home/ubuntu/workspace/data/geocodedMeetings.txt'));
 
