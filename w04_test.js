@@ -61,3 +61,10 @@ getData (meetingNote, 0, null, 'meeting notes');
 getData (meetingAccess, 0, null, 'meeting access');
 
 console.log(meetingNote);
+
+//new logic
+//goal: put data in each of their individual meeting objects
+//function
+//  
+//push into object
+//
