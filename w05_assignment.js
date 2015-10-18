@@ -7,74 +7,124 @@ var content = fs.readFileSync('/home/ubuntu/workspace/data/aameeting02M.txt');
 var $ = cheerio.load(content);
 
 var finalData = [];
-var finalObject = {};
+// var finalObject = {};
 var locationName = [];
 var groupName = [];
-var addressLine = [];
-var addressDetail = [];
-var meetingNote = [];
+var addressLine1 = [];
+var addressLine1Detail = [];
+var meetingNotes = [];
 var meetingAccess = [];
 var meetingTime = [];
-var meetingType = [];
+// var meetingType = [];
 
-var dataCategory = ['locationName', 'groupName', 'addressLine', 'addressDetail', 'meetingNotes', 'meetingAccess', 'meetingTime']
+var dataCategory = ['locationName', 'groupName', 'addressLine1', 'addressLine1Detail', 'meetingNotes', 'meetingAccess', 'meetingTime'];
 
 
 getData (locationName, 0, 0);
 getData (groupName, 0, 1);
-getData (addressLine, 0, 2, 'part1');
-getData (addressDetail, 0, 2, 'part2');
-getData (meetingNote, 0, null, 'meeting notes');
+getData (addressLine1, 0, 2, 'address 1');
+getData (addressLine1Detail, 0, 2, 'address 1 detail');
+getData (meetingNotes, 0, null, 'meeting notes');
 getData (meetingAccess, 0, null, 'meeting access');
 getData (meetingTime, 1, null, 'meeting time');
 // getData (meetingType, 1, null, 'meeting type');
 
-// console.log(meeting0);
+// console.log(meetingAccess);
 
 function getData (item, column, section, note) {
     
     //parse all data
     $('tbody').find('tr').each(function(a, elem){
         var rawData = [];
-        
         var cleanUp1 = [];
         
-        if (column == 1) {
+        if (column == 1) { ////// Meeting day, time & type 
             //if not splitting time & meeting type
             finalData = $(elem).find('td').eq(column).text().trim();
         
-        } else if (note == 'meeting notes') {
+        } else if (note == 'meeting notes') { ////// Meeting Notes
             finalData = $(elem).find('div').text().replace('*', '').trim();
         
-        } else if (note == 'meeting access'){
+        } else if (note == 'meeting access'){ ////// Meeting Accessibility
             finalData = $(elem).find('span').eq(column).text().trim();
+            // console.log(finalData.indexOf('Wheelchair access') > -1);
 
-        } else {
+        } else if (column == 0) {
             rawData = $(elem).find('td').eq(column).html().split('<br>')[section].trim();
             
-            if (note == 'part1') {
-                cleanUp1 = rawData.replace('(', ',');
-                finalData = cleanUp1.substring(0, cleanUp1.indexOf(',')); // + ', New York, NY')
+            if (section == 2) { ////// Address Line 1
+            
+                if (note == 'address 1') { // Meeting Address Line 1, Street
+                    rawData = $(elem).find('td').eq(column).html().split('<br>')[section].trim().replace('(', ',');
+
+                    if (rawData.indexOf('Strert') > -1) { // Correct Spelling
+                        rawData = rawData.replace('Strert', 'Street');
+                    } else if (rawData.indexOf('W.') > -1) { // Change format, for consistency
+                        rawData = rawData.replace('W.', 'West');
+                    } else if (rawData.indexOf('Bowery Street') > -1) { // Change format, for consistency 
+                        rawData = rawData.replace(' Street', '').substring(0, rawData.indexOf(',')).trim();
+                    }
+                    cleanUp1 = rawData.substring(0, rawData.indexOf(','));
+                    
+                    var city = ', New York, NY';
+                    finalData = (cleanUp1 + city);
+
+                } else if (note == 'address 1 detail') { ////// Meeting Address Line 1, Detail
+                    cleanUp1 = rawData.replace('(', ',');
+                    finalData = cleanUp1.split(',')[1].split('100')[0].trim(); // + ', New York, NY')
+                }
                 
-            } else if (note == 'part2') {
-                cleanUp1 = rawData.replace('(', ',');
-                finalData = cleanUp1.split(',')[1].split('100')[0].trim(); // + ', New York, NY')
+            } else if (section == 1) { ////// Group Name
+
+                rawData = $(elem).find('td').eq(column).html().split('<br>')[section].trim();
+                cleanUp1 = rawData.split('>')[1].split('<')[0].toUpperCase();
+                var first = cleanUp1.substr(0, cleanUp1.lastIndexOf('-') - 1); // before -
+                var second = cleanUp1.substr(cleanUp1.lastIndexOf('-') + 2); // after -
                 
-            } else {
+                if (first.length < second.length) { // if second is full name
+                    
+                    if (second.indexOf('I)') > -1) { // if there is a number, clear the number
+                        second = second.substr(0, first.length);
+                    } else if (second.indexOf('AHEAD') > -1) { // exceptions: women straight ahead sat
+                        second = first + ' - ' + second;
+                    }
+                    
+                    finalData = second;
+                    
+                } else if (first.length > second.length) { // if first is full name
+                
+                    if (first.indexOf('-') > -1) { // if - still exists, take what is after - (targeting T&A)
+                        var cleanUp2 = first.split('-')[1];
+                        finalData = cleanUp2;
+                    } else if (first.indexOf('I') > -1) { // if number exists, clear number
+                    
+                        if (first.indexOf('ROOM') > -1) { // exceptions
+                            finalData = first.replace('    (', '('); 
+                        } else {
+                            finalData = first.split('(')[0].trim();
+                        }
+                        
+                    } else { // if - does not exist, use first
+                        finalData = first;
+                    }
+                    
+                } else if (first.length == second.length) { // if both are same
+                    finalData = first;
+                }
+            
+            } else if (section == 0) { ///// Location Name
                 finalData = rawData.split('>')[1].split('<')[0].split(' -')[0].split('100')[0];
             } 
         }
-        item.push(finalData)
+        item.push(finalData);
         
     });
 
-    
-    // for (i = 0; i < finalData.length; i++) { 
-       
-    // }
-    
-    //push from array into objects
 }
+
+
+
+
 
 var meeting0 = {};
 var meeting1 = {};
@@ -114,11 +164,11 @@ function testRun (meetingNumber, a){
         } else if (i == 1) {
             meetingNumber[currentCategory] = groupName[a];
         } else if (i == 2) {
-            meetingNumber[currentCategory] = addressLine[a];
+            meetingNumber[currentCategory] = addressLine1[a];
         } else if (i == 3) {
-            meetingNumber[currentCategory] = addressDetail[a];
+            meetingNumber[currentCategory] = addressLine1Detail[a];
         } else if (i == 4) {
-            meetingNumber[currentCategory] = meetingNote[a];
+            meetingNumber[currentCategory] = meetingNotes[a];
         } else if (i == 5) {
             meetingNumber[currentCategory] = meetingAccess[a];
         } else if (i == 6) {
@@ -134,11 +184,15 @@ console.log(meeting9)
 
 
 
-
+  // for (i = 0; i < finalData.length; i++) { 
+       
+    // }
+    
+    //push from array into objects
 
 
             // rawData = $(elem).find('td').eq(column).text();
-            // if (note == 'meeting time') {
+            // if (item == 'meetingTime') {
             //     cleanUp1 = rawData.replace('Meeting', '+');
             //     console.log(cleanUp1);
             //     if (cleanUp1.indexOf("AM") < -1) {   
@@ -147,7 +201,7 @@ console.log(meeting9)
             //     } else {
                     
             //     }
-            // } else if (note == 'meeting type') {
+            // } else if (item == 'meeting type') {
             //     console.log(rawData.indexOf('Meeting'));
             //     finalData = rawData;
             // }
@@ -155,9 +209,9 @@ console.log(meeting9)
                 
                 //if split via indexOf??
             //rawData = $(elem).find('td').eq(column).text();
-            // if (note == 'meeting time') {
+            // if (item == 'meetingTime') {
                 // finalData = rawData.substring(0, rawData.indexOf('Meeting')).trim();
-            // } else if (note == 'meeting type') {
+            // } else if (item == 'meeting type') {
             //     console.log(rawData.indexOf('Meeting'));
             //     finalData = rawData;
             // }

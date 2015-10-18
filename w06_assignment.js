@@ -7,6 +7,7 @@ var $ = cheerio.load(content);
 
 var finalData = [];
 var groupName = [];
+var addressLine1 = [];
 
 function getGroupName (item, column, section, note) {
     $('tbody').find('tr').each(function(a, elem){
@@ -21,18 +22,17 @@ function getGroupName (item, column, section, note) {
         if (first.length < second.length) { // if second is full name
             
             if (second.indexOf('I)') > -1) { // if there is a number, clear the number
-                finalData = second.substr(0, first.length);
+                second = second.substr(0, first.length);
             } else if (second.indexOf('AHEAD') > -1) { // exceptions: women straight ahead sat
-                finalData = first + ' - ' + second;
-            } else { // if there is no number, use second
-                finalData = second;
+                second = first + ' - ' + second;
             }
+            
+            finalData = second;
             
         } else if (first.length > second.length) { // if first is full name
         
             if (first.indexOf('-') > -1) { // if - still exists, take what is after - (targeting T&A)
-                var cleanUp2 = first.split('-')[1];
-                finalData = cleanUp2;
+                finalData = first.split('-')[1];
             } else if (first.indexOf('I') > -1) { // if number exists, clear number
             
                 if (first.indexOf('ROOM') > -1) { // exceptions
@@ -53,7 +53,31 @@ function getGroupName (item, column, section, note) {
     });
 }
 
+function getAddress (item, column, section, note) {
+    var rawData = [];
+    var cleanUp1;
+
+    $('tbody').find('tr').each(function(a, elem){
+        rawData = $(elem).find('td').eq(column).html().split('<br>')[section].trim().replace('(', ',');
+        
+        if (rawData.indexOf('Strert') > -1) { // Correct Spelling
+            rawData = rawData.replace('Strert', 'Street');
+        } else if (rawData.indexOf('W.') > -1) { // Change format, for consistency
+            rawData = rawData.replace('W.', 'West');
+        } else if (rawData.indexOf('Bowery Street') > -1) { // Change format, for consistency 
+            rawData = rawData.replace(' Street', '').substring(0, rawData.indexOf(',')).trim();
+        }
+        cleanUp1 = rawData.substring(0, rawData.indexOf(','));
+        
+        var city = ', New York, NY';
+        finalData = cleanUp1;
+        item.push(finalData);
+        
+    });
+}
+
 getGroupName (groupName, 0, 1);
+getAddress (addressLine1, 0, 2);
 
 console.log(groupName);
 
