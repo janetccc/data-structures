@@ -7,29 +7,107 @@ var content = fs.readFileSync('/home/ubuntu/workspace/data/aameeting02M.txt');
 var $ = cheerio.load(content);
 
 var finalData = [];
-// var finalObject = {};
+var finalObject = {};
 var locationName = [];
 var groupName = [];
 var addressLine1 = [];
 var addressLine1Detail = [];
+var addressLine2 = [];
 var meetingNotes = [];
 var meetingAccess = [];
 var meetingTime = [];
-// var meetingType = [];
 
-var dataCategory = ['locationName', 'groupName', 'addressLine1', 'addressLine1Detail', 'meetingNotes', 'meetingAccess', 'meetingTime'];
+var dataCategory = ['locationName', 'groupName', 'addressLine1', 'addressLine1Detail', 'addressLine2', 'meetingNotes', 'meetingAccess', 'meetingTime'];
 
 
 getData (locationName, 0, 0);
 getData (groupName, 0, 1);
 getData (addressLine1, 0, 2, 'address 1');
 getData (addressLine1Detail, 0, 2, 'address 1 detail');
+getData (addressLine2, 0, 3, 'address 2');
 getData (meetingNotes, 0, null, 'meeting notes');
 getData (meetingAccess, 0, null, 'meeting access');
 getData (meetingTime, 1, null, 'meeting time');
-// getData (meetingType, 1, null, 'meeting type');
 
-// console.log(meetingAccess);
+
+var meeting0 = {};
+var meeting1 = {};
+var meeting2 = {};
+var meeting3 = {};
+var meeting4 = {};
+var meeting5 = {};
+var meeting6 = {};
+var meeting7 = {};
+var meeting8 = {};
+var meeting9 = {};
+var meeting10 = {};
+var meeting11 = {};
+var meeting12 = {};
+var meeting13 = {};
+var meeting14 = {};
+var meeting15 = {};
+var meeting16 = {};
+var meeting17 = {};
+var meeting18 = {};
+var meeting19 = {};
+var meeting20 = {};
+var meeting21 = {};
+var meeting22 = {};
+var meeting23 = {};
+var meeting24 = {};
+var meeting25 = {};
+var meeting26 = {};
+var meeting27 = {};
+finalObject = [testRun(meeting0, 0), testRun(meeting1, 1), testRun(meeting2, 2), testRun(meeting3, 3), testRun(meeting4, 4), testRun(meeting5, 5), testRun(meeting6, 6), testRun(meeting7, 7), testRun(meeting8, 8), testRun(meeting9, 9), testRun(meeting10, 10), testRun(meeting11, 11), testRun(meeting12, 12), testRun(meeting13, 13), testRun(meeting14, 14), testRun(meeting15, 15), testRun(meeting16, 16), testRun(meeting17, 17), testRun(meeting18, 18), testRun(meeting19, 19), testRun(meeting20, 20), testRun(meeting21, 21), testRun(meeting22, 22), testRun(meeting23, 23), testRun(meeting24, 24), testRun(meeting25, 25), testRun(meeting26, 26), testRun(meeting27, 27)];
+/////////step1 complete///////
+
+var dbName = 'aa';
+var collName = 'area02M';
+
+// Connection URL
+var url = 'mongodb://' + process.env.IP + ':27017/' + dbName;
+
+// Retrieve
+var MongoClient = require('mongodb').MongoClient; // npm install mongodb
+
+// MongoClient.connect(url, function(err, db) {
+//     if (err) {return console.dir(err);}
+// //I created a document called "meetings" inside the "aameetings" database
+//     var collection = db.collection(collName);
+
+//     // put the meetings data we have into the database
+//     collection.insert(finalObject);
+//     db.close();
+
+// });
+
+
+MongoClient.connect(url, function(err, db) {
+    if (err) {return console.dir(err);}
+
+    var collection = db.collection(collName);
+
+    collection.aggregate(
+        [
+            { $match: { $text: { $search: "Tuesdays" } } },
+            // { $sort: { score: { $meta: "textScore" } } },
+        ]
+    ).toArray(function(err, docs) {
+    // collection.aggregate([{ $limit : 3 }]).toArray(function(err, docs) {
+        if (err) {console.log(err)}
+        
+        else {
+            console.log(docs);
+        }
+        db.close();
+        
+    });
+
+}); //MongoClient.connect
+
+
+
+///////step1 functions////////
 
 function getData (item, column, section, note) {
     
@@ -40,7 +118,25 @@ function getData (item, column, section, note) {
         
         if (column == 1) { ////// Meeting day, time & type 
             //if not splitting time & meeting type
-            finalData = $(elem).find('td').eq(column).text().trim();
+            var string = $(elem).find('td').eq(column).text().trim();
+            var target = 'days';
+            var indexContainer = findTargetLocation(string, target);
+            var textContainer = [];
+            
+            for (var i = 0; i < indexContainer.length; i++) { 
+                first = indexContainer[i];
+                var second = indexContainer[i + 1];
+                var step1 = string.substring(first - 7, second);
+
+                if (step1.indexOf(target) > -1 ) {
+                    textContainer.push(step1.split(/\t/)[0].trim());
+                } else {
+                    textContainer.push(step1);
+                }
+                
+                finalData = textContainer;
+                first = indexContainer[i + 1];
+            }
         
         } else if (note == 'meeting notes') { ////// Meeting Notes
             finalData = $(elem).find('div').text().replace('*', '').trim();
@@ -73,6 +169,9 @@ function getData (item, column, section, note) {
                     cleanUp1 = rawData.replace('(', ',');
                     finalData = cleanUp1.split(',')[1].split('100')[0].trim(); // + ', New York, NY')
                 }
+                
+            } else if (section == 3) { ////// Meeting Address Line 2
+                    finalData = rawData.split('100')[0].replace('NY', '').trim();
                 
             } else if (section == 1) { ////// Group Name
 
@@ -118,46 +217,23 @@ function getData (item, column, section, note) {
         }
         item.push(finalData);
         
-    });
+        
+        function findTargetLocation (string, target) {
+            var indexContainer = [];
+            var index = string.indexOf(target);
+            while (index >= 0) {
+                indexContainer.push(index);
+                index = string.indexOf(target, index + 1);
+            }
+            return indexContainer;
+        } // end of findtargetLocation func
+        
+    }); // end of tbody
 
 }
 
-
-
-
-
-var meeting0 = {};
-var meeting1 = {};
-var meeting2 = {};
-var meeting3 = {};
-var meeting4 = {};
-var meeting5 = {};
-var meeting6 = {};
-var meeting7 = {};
-var meeting8 = {};
-var meeting9 = {};
-var meeting10 = {};
-
-
-
-
-testRun(meeting0, 0);
-testRun(meeting1, 1);
-testRun(meeting2, 2);
-testRun(meeting3, 3);
-testRun(meeting4, 4);
-testRun(meeting5, 5);
-testRun(meeting6, 6);
-testRun(meeting7, 7);
-testRun(meeting8, 8);
-testRun(meeting9, 9);
-
-
-// console.log(locationName)
-
 function testRun (meetingNumber, a){
-    var i;
-    for (i = 0; i < dataCategory.length; i++) { 
+    for (var i = 0; i < dataCategory.length; i++) { 
         var currentCategory = dataCategory[i];
         if ( i == 0) {
             meetingNumber[currentCategory] = locationName[a];
@@ -168,50 +244,14 @@ function testRun (meetingNumber, a){
         } else if (i == 3) {
             meetingNumber[currentCategory] = addressLine1Detail[a];
         } else if (i == 4) {
-            meetingNumber[currentCategory] = meetingNotes[a];
+            meetingNumber[currentCategory] = addressLine2[a];
         } else if (i == 5) {
-            meetingNumber[currentCategory] = meetingAccess[a];
+            meetingNumber[currentCategory] = meetingNotes[a];
         } else if (i == 6) {
+            meetingNumber[currentCategory] = meetingAccess[a];
+        } else if (i == 7) {
             meetingNumber[currentCategory] = meetingTime[a];
         } 
     }
+    return meetingNumber;
 }
-
-console.log(meeting9)
-// function sortData (meetingNumber) {
-    
-// }
-
-
-
-  // for (i = 0; i < finalData.length; i++) { 
-       
-    // }
-    
-    //push from array into objects
-
-
-            // rawData = $(elem).find('td').eq(column).text();
-            // if (item == 'meetingTime') {
-            //     cleanUp1 = rawData.replace('Meeting', '+');
-            //     console.log(cleanUp1);
-            //     if (cleanUp1.indexOf("AM") < -1) {   
-            //     // if (rawData.indexOf("AM") > -1) {   
-            //         finalData = cleanUp1;
-            //     } else {
-                    
-            //     }
-            // } else if (item == 'meeting type') {
-            //     console.log(rawData.indexOf('Meeting'));
-            //     finalData = rawData;
-            // }
-                
-                
-                //if split via indexOf??
-            //rawData = $(elem).find('td').eq(column).text();
-            // if (item == 'meetingTime') {
-                // finalData = rawData.substring(0, rawData.indexOf('Meeting')).trim();
-            // } else if (item == 'meeting type') {
-            //     console.log(rawData.indexOf('Meeting'));
-            //     finalData = rawData;
-            // }

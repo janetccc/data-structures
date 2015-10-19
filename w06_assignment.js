@@ -14,10 +14,9 @@ function getGroupName (item, column, section, note) {
         var rawData = [];
         var cleanUp1 = [];
         // parse target data
-        rawData = $(elem).find('td').eq(column).html().split('<br>')[section].trim();
-        cleanUp1 = rawData.split('>')[1].split('<')[0].toUpperCase();
-        var first = cleanUp1.substr(0, cleanUp1.lastIndexOf('-') - 1); // before -
-        var second = cleanUp1.substr(cleanUp1.lastIndexOf('-') + 2); // after -
+        rawData = $(elem).find('td').eq(0).find('b').text().trim().toUpperCase();
+        var first = rawData.substr(0, rawData.lastIndexOf('-') - 1); // before -
+        var second = rawData.substr(rawData.lastIndexOf('-') + 2); // after -
         
         if (first.length < second.length) { // if second is full name
             
@@ -36,7 +35,7 @@ function getGroupName (item, column, section, note) {
             } else if (first.indexOf('I') > -1) { // if number exists, clear number
             
                 if (first.indexOf('ROOM') > -1) { // exceptions
-                    finalData = first;   
+                    finalData = first.replace('    (', '(');
                 } else {
                     finalData = first.split('(')[0].trim();
                 }
@@ -49,7 +48,7 @@ function getGroupName (item, column, section, note) {
             finalData = first;
         }
         
-        item.push(finalData.toUpperCase());
+        item.push(finalData);
     });
 }
 
