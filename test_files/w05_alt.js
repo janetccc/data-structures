@@ -151,6 +151,8 @@ function getData () {
             return textContainer;
         } // end of getMeetingDay
         
+        
+        
         function getMeetingTime (string, target, a) {
             var indexContainer = findTargetLocation(string, target);
             
@@ -167,8 +169,8 @@ function getData () {
                 }
             } else {
                 for (var i = 0; i < indexContainer.length; i++) { 
-                    var second = indexContainer[i];
-                    var step1 = string.substring(first + a, second);
+                    second = indexContainer[i];
+                    step1 = string.substring(first + a, second);
                     
                     if (step1.indexOf(target) > -1 ) {
                         textContainer.push(step1.split('From')[1].split(target)[0].trim());
