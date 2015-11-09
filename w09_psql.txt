@@ -1,0 +1,18 @@
+CREATE TABLE sensor ( sensorVal boolean, dateTime timestamp DEFAULT current_timestamp);
+
+SELECT * FROM sensor;
+
+INSERT INTO sensor VALUES (TRUE, DEFAULT);
+INSERT INTO sensor VALUES (FALSE, DEFAULT);
+
+CREATE TABLE answers ( answerVal boolean, dateTime timestamp DEFAULT current_timestamp);
+
+INSERT INTO answers VALUES (TRUE, DEFAULT);
+INSERT INTO answers VALUES (FALSE, DEFAULT);
+
+CREATE TABLE sound ( soundwave integer, dateTime timestamp DEFAULT current_timestamp);
+
+INSERT INTO sound VALUES (8, DEFAULT);
+INSERT INTO sound VALUES (50, DEFAULT);
+INSERT INTO sound VALUES (2, DEFAULT);
+INSERT INTO sound VALUES (40, DEFAULT);
