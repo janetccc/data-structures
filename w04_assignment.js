@@ -16,8 +16,8 @@ MongoClient.connect(url, function(err, db) {
     // THIS IS WHERE THE DOCUMENT(S) IS/ARE INSERTED TO MONGO:
     for (var i=0; i < meetingAddress.length; i++) {
         collection.insert(meetingAddress[i]);
-        console.log((i + 1) + '/' + meetingAddress.length)
-        }
+        console.log((i + 1) + '/' + meetingAddress.length);
+    }
     db.close();
     
 
