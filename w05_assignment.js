@@ -94,13 +94,13 @@ function formatObject () {
             thisMeeting.latLong = JSON.parse(body).results[0].geometry.location;
             meetingsData.push(thisMeeting);
             count = count + 1;
-            console.log('Loading: '+count+'/28');
+            // console.log('Loading: '+count+'/28');
         });
         setTimeout(callback, 200);
     }, function() {
-        geoCode.push(meetingsData);
+        geoCode = meetingsData;
         console.log('meetingsData > geoCode');
-        fs.writeFileSync('/home/ubuntu/workspace/data/meetings_geodataFull.txt', geoCode);
+        fs.writeFileSync('/home/ubuntu/workspace/data/meetings_geodataFull.txt', JSON.stringify(geoCode));
         console.log('meetingsData > meetings_geodataFull.txt');
         createFinalObject(true);
     });
@@ -290,6 +290,27 @@ function findTargetLocation (string, target) {
     return indexContainer;
 }
 
+breakdownTimes(meetingStartTime[11]);
+
+function breakdownTimes(time){
+    console.log('time: ' + time);
+    if (time.length > 0) {
+        console.log('need to breat down');
+    } else if (time.length == 0 ) {
+        console.log("don't need to break down");
+    }
+    var meetingsection = {};
+    var allMeetings = [];
+    for (var i = 0; i < time.length; i++) { 
+        meetingsection[i].time = time[i];
+        meetingsection[i].type = meetingType[i];
+        console.log('seperate: ' + meetingsection[i]);
+        allMeetings.push(meetingsection[i]);
+    }
+    
+    console.log('allMeetings: ' + allMeetings);
+}
+
 function inputData (meetingNumber, a){
     for (var i = 0; i < 11; i++) { 
         meetingNumber.locationName = locationName[a];
@@ -324,62 +345,3 @@ function createFinalObject(status) {
 
 /////////step1 complete///////
 
-var meetingAddress = JSON.parse(fs.readFileSync('/home/ubuntu/workspace/data/sortedMeetings02M.txt'));
-var dbName = 'aa';
-var collName = 'area02M';
-
-// Connection URL
-var url = 'mongodb://' + process.env.IP + ':27017/' + dbName;
-
-// Retrieve
-var MongoClient = require('mongodb').MongoClient; // npm install mongodb
-
-MongoClient.connect(url, function(err, db) {
-    if (err) {return console.dir(err);}
-    //I created a document called "meetings" inside the "aameetings" database
-    var collection = db.collection(collName);
-
-    // put the meetings data we have into the database
-    // collection.insert(finalObject);
-    
-    // THIS IS WHERE THE DOCUMENT(S) IS/ARE INSERTED TO MONGO:
-    for (var i=0; i < meetingAddress.length; i++) {
-        collection.insert(meetingAddress[i]);
-        console.log((i + 1) + '/' + meetingAddress.length);
-    }
-    db.close();
-
-});
-
-
-// var collection = db.collection('meetings');
-
-//     // THIS IS WHERE THE DOCUMENT(S) IS/ARE INSERTED TO MONGO:
-//     for (var i=0; i < meetingAddress.length; i++) {
-//         collection.insert(meetingAddress[i]);
-//         console.log((i + 1) + '/' + meetingAddress.length)
-//         }
-
-
-// MongoClient.connect(url, function(err, db) {
-//     if (err) {return console.dir(err);}
-
-//     var collection = db.collection(collName);
-
-//     collection.aggregate(
-//         [
-//             { $match: { $text: { $search: "Tuesdays" } } },
-//             // { $sort: { score: { $meta: "textScore" } } },
-//         ]
-//     ).toArray(function(err, docs) {
-//     // collection.aggregate([{ $limit : 3 }]).toArray(function(err, docs) {
-//         if (err) {console.log(err)}
-        
-//         else {
-//             console.log(docs);
-//         }
-//         db.close();
-        
-//     });
-
-// }); //MongoClient.connect
