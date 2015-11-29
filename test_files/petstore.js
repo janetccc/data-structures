@@ -57,11 +57,48 @@ MongoClient.connect(url, function(err, db) {
 
     collection.aggregate(
         [
-            ////grouping by location
-            { $group : { _id : "$location" , storename: { $push : "$storename"}, products: { $push: "$products"}}},
-            ////grouping by store
-            { $group : { _id : "$storename", location: { $push : "$_id"}, products: { $push: "$products"}}}
-            // { $unwind : "$product" }
+            // { $group : { 
+            //     _id : { storename: "$storename", address: "$location"}, 
+            //     products: { $push: "$products"}
+            // }},
+            
+            //  { $group : { _id : { latLong : "$_id.latLong" }, 
+            //         meetingGroups : { $addToSet : {  meetingGroup : "$_id", 
+            //                                         meetings : {
+            //                                         meetingDays : "$meetingDay",
+            //                                         startTimes : "$startTime",
+            //                                         startTimeHours : "$startTimeHour",
+            //                                         endTimes : "$endTime",
+            //                                         meetingTypes : "$meetingType",
+            //                                         specialInterest : "$specialInterest"
+            //                                         }
+            //         } }
+            //         } }
+            
+            { $group: {
+                _id : "$location",
+                storeName: { $push: "$storename" },
+                products: { $push: "$products"}
+            }},
+            
+            //grouping by store
+            { $group : { 
+                _id : "$storeName",
+                storeGroups : { $addToSet : { location: "$_id" ,
+                                                product_list: "$products"
+                }}
+            }},
+            
+            
+            // { $project: { 
+            //     _id: 0,
+            //     storeName: "$_id",
+            //     stores: { 
+            //         location: "$address", 
+            //         products: "$products"
+                    
+            //     }
+            // }}
         ]
     ).toArray(function(err, docs) {
         
@@ -69,6 +106,7 @@ MongoClient.connect(url, function(err, db) {
         
         else {
             console.log(JSON.stringify(docs));
+            // console.log(docs);
         }
         db.close();
         

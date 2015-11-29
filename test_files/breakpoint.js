@@ -7,7 +7,7 @@ var request = require('request'); // npm install request
 var urlContainer = [];
 var fileContainer = [];
 
-var content = fs.readFileSync('/home/ubuntu/workspace/data/aameeting01M.txt');
+var content = fs.readFileSync('/home/ubuntu/workspace/data/aameeting02M.txt');
 
 var $ = cheerio.load(content);
 
@@ -29,26 +29,75 @@ var meetingDay = [];
 var meetingType = [];
 var meetingInterest = [];
 var finalData = [];
-var finalObject = [];
-var zone = 1;
+
+var meeting0 = {};
+var meeting1 = {};
+var meeting2 = {};
+var meeting3 = {};
+var meeting4 = {};
+var meeting5 = {};
+var meeting6 = {};
+var meeting7 = {};
+var meeting8 = {};
+var meeting9 = {};
+var meeting10 = {};
+var meeting11 = {};
+var meeting12 = {};
+var meeting13 = {};
+var meeting14 = {};
+var meeting15 = {};
+var meeting16 = {};
+var meeting17 = {};
+var meeting18 = {};
+var meeting19 = {};
+var meeting20 = {};
+var meeting21 = {};
+var meeting22 = {};
+var meeting23 = {};
+var meeting24 = {};
+var meeting25 = {};
+var meeting26 = {};
+var meeting27 = {};
+var finalObject = {};
+var zone = 2;
 
 ///-----------------------
 
-
-parseData();
+parseData();// part 1
 
 function parseData() {
     async.waterfall([
-        createURL,
-        createFileNames,
-        getMeetingFromSite, //GETTING ALL RAW DATA FROM WEBSITE TO TXT
-        cleanData  //get data ready for mongo
+        createRawDataTxt, //GETTING ALL RAW DATA FROM WEBSITE TO TXT
+        cleanData//get data ready for mongo
     ], function (err, result) {
     // result now equals 'done' 
         console.log('!!!completed part 1!!!');
-        console.log('number of meetings: ' + groupName.length);
-        console.log('group name: ' + groupName);
-        console.log('location name: ' + locationName);
+        // console.log('final 12: ' + JSON.stringify(finalObject[12]));
+        // console.log(meetingDay[12].length);
+        // var holder = meetingDay[12];
+        // console.log(holder[1]);
+        
+        breakdownTimes(meetingDay[12], 12);
+        
+        // console.log('day: ' + meetingDay.length);
+        // console.log('start: ' + meetingStartTime.length);
+        // console.log('end: ' + meetingEndTime.length);
+        // console.log('type: ' + meetingType.length);
+        // console.log('interest: ' + meetingInterest.length);
+    });
+}
+
+//GETTING ALL RAW DATA FROM WEBSITE TO TXT
+function createRawDataTxt(callback) {
+    async.waterfall([
+        createURL,
+        createFileNames,
+        getMeetingFromSite
+    ], function (err, result) {
+        // result now equals 'done' 
+        console.log('obtaining all data from site to txt');
+        console.log('---------');
+        callback(null);
     });
 }
 
@@ -103,10 +152,7 @@ function getMeetingFromSite (callback) { //get all meeting info from aa website
 ///////step1////////
 function cleanData(callback) {//get data ready for mongo
   async.waterfall([
-    textData,
-    getMeetingSection,
-    getGeoData,
-    createFinalObject
+    getTextData,
   ], function (err, result) {
     console.log('completed cleaning data, ready to put into mongo');
     console.log('---------');
@@ -114,25 +160,15 @@ function cleanData(callback) {//get data ready for mongo
   });
 }
 
-function getGeoData (callback) {
-    async.eachSeries(addressLine1, function(value, callback) {
-        var apiRequest = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + value.split(' ').join('+') + '&key=' + apiKey;
-        var thisMeeting = new Object;
-        thisMeeting.address = value;
-        request(apiRequest, function(err, resp, body) {
-            if (err) {throw err;}
-            thisMeeting.latLong = JSON.parse(body).results[0].geometry.location;
-            meetingsData.push(thisMeeting);
-            count = count + 1;
-            // console.log('Loading: '+count+'/28');
-        });
-        setTimeout(callback, 200);
-    }, function() {
-        geoCode = meetingsData;
-        console.log('obtained geoCode');
-        fs.writeFileSync('/home/ubuntu/workspace/data/meetings_geodataFull.txt', JSON.stringify(geoCode));
-        console.log('--file updated: meetingsData > meetings_geodataFull.txt');
-        callback(null, true);
+
+
+function getTextData(callback) {
+    async.waterfall([
+        textData
+    ], function (err, result) {
+        // getMeetingSection();
+        console.log('obtained all text data');
+        callback(null);
     });
 }
 
@@ -312,11 +348,10 @@ function getMeetingDay () {
 
 }
 
-function getMeetingSection (callback) {
+function getMeetingSection () {
     for (var i = 0; i < groupName.length; i++) { 
         breakdownTimes(meetingDay[i], i);
     }
-    callback();
 }
 
 var meetingSection = [];
@@ -338,7 +373,9 @@ function breakdownTimes(breakpoint, x){
         section.interest = interestHolder[i];
         allSections.push(JSON.stringify(section));
     }
+    
     meetingSection.push(allSections);
+    console.log(meetingSection);
 }
 
 function getMeetingAccess () {
@@ -355,33 +392,4 @@ function findTargetLocation (string, target) {
         index = string.indexOf(target, index + 1);
     }
     return indexContainer;
-}
-
-function inputData (){ 
-    var meeting= {};
-    for (var i = 0; i < groupName.length; i++) { 
-        meeting.zone = zone;
-        meeting.locationName = locationName[i];
-        meeting.groupName = groupName[i];
-        meeting.latLong = geoCode[i];
-        meeting.addressLine1 = addressLine1[i];
-        meeting.addressLine1Detail = addressLine1Detail[i];
-        meeting.addressLine2 = addressLine2[i];
-        meeting.notes = meetingNotes[i];
-        meeting.access = meetingAccess[i];
-        meeting.section = meetingSection[i];
-        finalObject.push(meeting);
-    }
-}
-
-function createFinalObject(status, callback) {
-    if (status == true) {
-        inputData();
-        fs.writeFileSync('/home/ubuntu/workspace/data/sortedMeetings' + zone + 'M.txt', JSON.stringify(finalObject));
-        console.log('--file updated: finalObject > sortedMeetings' + zone + 'M.txt');
-    } else if (status == false) {
-        console.log('error');
-        console.log('status: ' + status);
-    }
-    callback();
 }

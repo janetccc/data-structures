@@ -15,7 +15,16 @@ MongoClient.connect(url, function(err, db) {
     var collection = db.collection(collName);
     
     
-    //  collection.aggregate([{ $match :{ availableBikes : 0 } }, { $group : { _id: null, count: { $sum : 1}, "avgerageNumberStations" : { $avg : "$totalDocks" }}}]).toArray(function(err, docs) {
+    collection.aggregate([
+        { $match :
+            { availableBikes : 0 } 
+        }, { $group : 
+            { _id: null, 
+                count: { $sum : 1}, 
+                "avgerageNumberStations" : { $avg : "$totalDocks" }
+            }
+        }
+    ]).toArray(function(err, docs) {
     
     //  collection.aggregate([{ $match :{ availableBikes : 0 } }]).toArray(function(err, docs) {
     

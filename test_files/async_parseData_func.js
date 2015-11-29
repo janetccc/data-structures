@@ -7,7 +7,7 @@ var request = require('request'); // npm install request
 var urlContainer = [];
 var fileContainer = [];
 
-var content = fs.readFileSync('/home/ubuntu/workspace/data/aameeting01M.txt');
+var content = fs.readFileSync('/home/ubuntu/workspace/data/aameeting02M.txt');
 
 var $ = cheerio.load(content);
 
@@ -29,26 +29,96 @@ var meetingDay = [];
 var meetingType = [];
 var meetingInterest = [];
 var finalData = [];
-var finalObject = [];
-var zone = 1;
+
+var meeting0 = {};
+var meeting1 = {};
+var meeting2 = {};
+var meeting3 = {};
+var meeting4 = {};
+var meeting5 = {};
+var meeting6 = {};
+var meeting7 = {};
+var meeting8 = {};
+var meeting9 = {};
+var meeting10 = {};
+var meeting11 = {};
+var meeting12 = {};
+var meeting13 = {};
+var meeting14 = {};
+var meeting15 = {};
+var meeting16 = {};
+var meeting17 = {};
+var meeting18 = {};
+var meeting19 = {};
+var meeting20 = {};
+var meeting21 = {};
+var meeting22 = {};
+var meeting23 = {};
+var meeting24 = {};
+var meeting25 = {};
+var meeting26 = {};
+var meeting27 = {};
+var finalObject = {};
+var zone = 0;
 
 ///-----------------------
 
 
-parseData();
+async.waterfall([
+  createRawDataTxt,
+  parseZones
+], function (err, result) {
+  console.log('END MAIN WATERFALL');
+});
+    
+    
 
-function parseData() {
+
+function parseZones () {
+  async.eachSeries(fileContainer, function (file, callback) {
+    console.log(file);
+    console.log('zone: ' + zone);
+    cleanData();
+    zone++;
+    callback(); // Alternatively: callback(new Error());
+  }, function (err) {
+    if (err) { throw err; }
+    console.log('Well done :-)!');
+  });
+}
+
+
+
+
+// function parseData() {
+//     async.waterfall([
+//         parseData();// part 1
+//     ], function (err, result) {
+        
+//     }
+// }
+
+// function parseData() {
+//     async.waterfall([
+//         createRawDataTxt, //GETTING ALL RAW DATA FROM WEBSITE TO TXT
+//         cleanData//get data ready for mongo
+//     ], function (err, result) {
+//     // result now equals 'done' 
+//         console.log('!!!completed part 1!!!');
+//     });
+// }
+
+//GETTING ALL RAW DATA FROM WEBSITE TO TXT
+function createRawDataTxt(callback) {
     async.waterfall([
         createURL,
         createFileNames,
-        getMeetingFromSite, //GETTING ALL RAW DATA FROM WEBSITE TO TXT
-        cleanData  //get data ready for mongo
+        getMeetingFromSite
     ], function (err, result) {
-    // result now equals 'done' 
-        console.log('!!!completed part 1!!!');
-        console.log('number of meetings: ' + groupName.length);
-        console.log('group name: ' + groupName);
-        console.log('location name: ' + locationName);
+        // result now equals 'done' 
+        console.log('obtaining all data from site to txt');
+        console.log('---------');
+        callback(null);
     });
 }
 
@@ -103,8 +173,7 @@ function getMeetingFromSite (callback) { //get all meeting info from aa website
 ///////step1////////
 function cleanData(callback) {//get data ready for mongo
   async.waterfall([
-    textData,
-    getMeetingSection,
+    getTextData,
     getGeoData,
     createFinalObject
   ], function (err, result) {
@@ -133,6 +202,17 @@ function getGeoData (callback) {
         fs.writeFileSync('/home/ubuntu/workspace/data/meetings_geodataFull.txt', JSON.stringify(geoCode));
         console.log('--file updated: meetingsData > meetings_geodataFull.txt');
         callback(null, true);
+    });
+}
+
+
+function getTextData(callback) {
+    async.waterfall([
+        textData
+    ], function (err, result) {
+        getMeetingSection();
+        console.log('obtained all text data');
+        callback(null);
     });
 }
 
@@ -312,11 +392,10 @@ function getMeetingDay () {
 
 }
 
-function getMeetingSection (callback) {
+function getMeetingSection () {
     for (var i = 0; i < groupName.length; i++) { 
         breakdownTimes(meetingDay[i], i);
     }
-    callback();
 }
 
 var meetingSection = [];
@@ -357,29 +436,33 @@ function findTargetLocation (string, target) {
     return indexContainer;
 }
 
-function inputData (){ 
-    var meeting= {};
+function inputData (meetingNumber, a){
     for (var i = 0; i < groupName.length; i++) { 
-        meeting.zone = zone;
-        meeting.locationName = locationName[i];
-        meeting.groupName = groupName[i];
-        meeting.latLong = geoCode[i];
-        meeting.addressLine1 = addressLine1[i];
-        meeting.addressLine1Detail = addressLine1Detail[i];
-        meeting.addressLine2 = addressLine2[i];
-        meeting.notes = meetingNotes[i];
-        meeting.access = meetingAccess[i];
-        meeting.section = meetingSection[i];
-        finalObject.push(meeting);
+        meetingNumber.zone = zone;
+        meetingNumber.locationName = locationName[a];
+        meetingNumber.groupName = groupName[a];
+        meetingNumber.latLong = geoCode[a];
+        meetingNumber.addressLine1 = addressLine1[a];
+        meetingNumber.addressLine1Detail = addressLine1Detail[a];
+        meetingNumber.addressLine2 = addressLine2[a];
+        meetingNumber.notes = meetingNotes[a];
+        meetingNumber.access = meetingAccess[a];
+        meetingNumber.section = meetingSection[a];
     }
+    finalObject.push(JSON.stringify(meetingNumber));
 }
+
+
 
 function createFinalObject(status, callback) {
     if (status == true) {
-        inputData();
+        // finalObject = [inputData(meeting0, 0), inputData(meeting1, 1), inputData(meeting2, 2), inputData(meeting3, 3), inputData(meeting4, 4), inputData(meeting5, 5), inputData(meeting6, 6), inputData(meeting7, 7), inputData(meeting8, 8), inputData(meeting9, 9), inputData(meeting10, 10), inputData(meeting11, 11), inputData(meeting12, 12), inputData(meeting13, 13), inputData(meeting14, 14), inputData(meeting15, 15), inputData(meeting16, 16), inputData(meeting17, 17), inputData(meeting18, 18), inputData(meeting19, 19), inputData(meeting20, 20), inputData(meeting21, 21), inputData(meeting22, 22), inputData(meeting23, 23), inputData(meeting24, 24), inputData(meeting25, 25), inputData(meeting26, 26), inputData(meeting27, 27)];
+        console.log(finalObject);
         fs.writeFileSync('/home/ubuntu/workspace/data/sortedMeetings' + zone + 'M.txt', JSON.stringify(finalObject));
-        console.log('--file updated: finalObject > sortedMeetings' + zone + 'M.txt');
+        console.log('--file updated: finalObject > sortedMeetings02M.txt');
     } else if (status == false) {
+        console.log('not ready');
+    } else {
         console.log('error');
         console.log('status: ' + status);
     }
