@@ -1140,14 +1140,6 @@ table thead th {
                     </td>
                     <td style="border-bottom:1px solid #e3e3e3;width:350px;" valign="top">
                    	 	
-				  	    <b>Mondays From</b>  2:30 PM <b>to</b> 3:30 PM <br /><b>Meeting Type</b> B = Beginners meeting <br /><b>Special Interest</b> Living Sober
-			 			<br />
-                    	<br />
-                    	
-				  	    <b>Tuesdays From</b>  2:30 PM <b>to</b> 3:30 PM <br /><b>Meeting Type</b> S = Step meeting 
-			 			<br />
-                    	<br />
-                    	
 				  	    <b>Wednesdays From</b>  2:30 PM <b>to</b> 3:30 PM <br /><b>Meeting Type</b> BB = Big Book meeting 
 			 			<br />
                     	<br />
@@ -1157,6 +1149,14 @@ table thead th {
                     	<br />
                     	
 				  	    <b>Fridays From</b>  2:30 PM <b>to</b> 3:30 PM <br /><b>Meeting Type</b> S = Step meeting 
+			 			<br />
+                    	<br />
+                    	
+				  	    <b>Mondays From</b>  2:30 PM <b>to</b> 3:30 PM <br /><b>Meeting Type</b> B = Beginners meeting <br /><b>Special Interest</b> Living Sober
+			 			<br />
+                    	<br />
+                    	
+				  	    <b>Tuesdays From</b>  2:30 PM <b>to</b> 3:30 PM <br /><b>Meeting Type</b> S = Step meeting 
 			 			<br />
                     	<br />
                     		
@@ -1396,11 +1396,11 @@ table thead th {
 			 			<br />
                     	<br />
                     	
-				  	    <b>Sundays From</b>  6:00 PM <b>to</b> 7:00 PM <br /><b>Meeting Type</b> S = Step meeting 
+				  	    <b>Sundays From</b>  6:00 PM <b>to</b> 7:00 PM <br /><b>Meeting Type</b> OD = Open Discussion meeting 
 			 			<br />
                     	<br />
                     	
-				  	    <b>Sundays From</b>  6:00 PM <b>to</b> 7:00 PM <br /><b>Meeting Type</b> OD = Open Discussion meeting 
+				  	    <b>Sundays From</b>  6:00 PM <b>to</b> 7:00 PM <br /><b>Meeting Type</b> S = Step meeting 
 			 			<br />
                     	<br />
                     	
@@ -1919,10 +1919,6 @@ table thead th {
                     </td>
                     <td style="border-bottom:1px solid #e3e3e3;width:350px;" valign="top">
                    	 	
-				  	    <b>Mondays From</b>  11:00 AM <b>to</b> 12:00 PM <br /><b>Meeting Type</b> OD = Open Discussion meeting 
-			 			<br />
-                    	<br />
-                    	
 				  	    <b>Tuesdays From</b>  11:00 AM <b>to</b> 12:00 PM <br /><b>Meeting Type</b> OD = Open Discussion meeting 
 			 			<br />
                     	<br />
@@ -1936,6 +1932,10 @@ table thead th {
                     	<br />
                     	
 				  	    <b>Fridays From</b>  11:00 AM <b>to</b> 12:00 PM <br /><b>Meeting Type</b> OD = Open Discussion meeting 
+			 			<br />
+                    	<br />
+                    	
+				  	    <b>Mondays From</b>  11:00 AM <b>to</b> 12:00 PM <br /><b>Meeting Type</b> OD = Open Discussion meeting 
 			 			<br />
                     	<br />
                     	
@@ -2104,14 +2104,6 @@ table thead th {
                     </td>
                     <td style="border-bottom:1px solid #e3e3e3;width:350px;" valign="top">
                    	 	
-				  	    <b>Thursdays From</b>  9:30 AM <b>to</b> 10:30 AM <br /><b>Meeting Type</b> OD = Open Discussion meeting <br /><b>Special Interest</b> Daily Reflections
-			 			<br />
-                    	<br />
-                    	
-				  	    <b>Fridays From</b>  9:30 AM <b>to</b> 10:30 AM <br /><b>Meeting Type</b> OD = Open Discussion meeting <br /><b>Special Interest</b> Daily Reflections
-			 			<br />
-                    	<br />
-                    	
 				  	    <b>Mondays From</b>  9:30 AM <b>to</b> 10:30 AM <br /><b>Meeting Type</b> OD = Open Discussion meeting <br /><b>Special Interest</b> Daily Reflections
 			 			<br />
                     	<br />
@@ -2121,6 +2113,14 @@ table thead th {
                     	<br />
                     	
 				  	    <b>Wednesdays From</b>  9:30 AM <b>to</b> 10:30 AM <br /><b>Meeting Type</b> OD = Open Discussion meeting <br /><b>Special Interest</b> Daily Reflections
+			 			<br />
+                    	<br />
+                    	
+				  	    <b>Thursdays From</b>  9:30 AM <b>to</b> 10:30 AM <br /><b>Meeting Type</b> OD = Open Discussion meeting <br /><b>Special Interest</b> Daily Reflections
+			 			<br />
+                    	<br />
+                    	
+				  	    <b>Fridays From</b>  9:30 AM <b>to</b> 10:30 AM <br /><b>Meeting Type</b> OD = Open Discussion meeting <br /><b>Special Interest</b> Daily Reflections
 			 			<br />
                     	<br />
                     		
@@ -2285,11 +2285,11 @@ table thead th {
 			 			<br />
                     	<br />
                     	
-				  	    <b>Fridays From</b>  8:00 PM <b>to</b> 9:00 PM <br /><b>Meeting Type</b> S = Step meeting 
+				  	    <b>Tuesdays From</b>  8:00 PM <b>to</b> 9:00 PM <br /><b>Meeting Type</b> C = Closed Discussion meeting 
 			 			<br />
                     	<br />
                     	
-				  	    <b>Tuesdays From</b>  8:00 PM <b>to</b> 9:00 PM <br /><b>Meeting Type</b> C = Closed Discussion meeting 
+				  	    <b>Fridays From</b>  8:00 PM <b>to</b> 9:00 PM <br /><b>Meeting Type</b> S = Step meeting 
 			 			<br />
                     	<br />
                     		
@@ -2496,10 +2496,6 @@ table thead th {
                     </td>
                     <td style="border-bottom:1px solid #e3e3e3;width:350px;" valign="top">
                    	 	
-				  	    <b>Mondays From</b>  6:00 AM <b>to</b> 7:00 AM <br /><b>Meeting Type</b> C = Closed Discussion meeting <br /><b>Special Interest</b> Daily Reflections
-			 			<br />
-                    	<br />
-                    	
 				  	    <b>Thursdays From</b>  6:00 AM <b>to</b> 7:00 AM <br /><b>Meeting Type</b> S = Step meeting 
 			 			<br />
                     	<br />
@@ -2512,11 +2508,11 @@ table thead th {
 			 			<br />
                     	<br />
                     	
-				  	    <b>Fridays From</b>  6:00 AM <b>to</b> 7:00 AM <br /><b>Meeting Type</b> BB = Big Book meeting 
+				  	    <b>Mondays From</b>  6:00 AM <b>to</b> 7:00 AM <br /><b>Meeting Type</b> C = Closed Discussion meeting <br /><b>Special Interest</b> Daily Reflections
 			 			<br />
                     	<br />
                     	
-				  	    <b>Mondays From</b>  7:15 AM <b>to</b> 8:15 AM <br /><b>Meeting Type</b> C = Closed Discussion meeting 
+				  	    <b>Fridays From</b>  6:00 AM <b>to</b> 7:00 AM <br /><b>Meeting Type</b> BB = Big Book meeting 
 			 			<br />
                     	<br />
                     	
@@ -2532,11 +2528,11 @@ table thead th {
 			 			<br />
                     	<br />
                     	
-				  	    <b>Fridays From</b>  7:15 AM <b>to</b> 8:15 AM <br /><b>Meeting Type</b> C = Closed Discussion meeting 
+				  	    <b>Mondays From</b>  7:15 AM <b>to</b> 8:15 AM <br /><b>Meeting Type</b> C = Closed Discussion meeting 
 			 			<br />
                     	<br />
                     	
-				  	    <b>Sundays From</b>  8:00 AM <b>to</b> 9:00 AM <br /><b>Meeting Type</b> C = Closed Discussion meeting 
+				  	    <b>Fridays From</b>  7:15 AM <b>to</b> 8:15 AM <br /><b>Meeting Type</b> C = Closed Discussion meeting 
 			 			<br />
                     	<br />
                     	
@@ -2544,11 +2540,11 @@ table thead th {
 			 			<br />
                     	<br />
                     	
-				  	    <b>Thursdays From</b>  8:30 AM <b>to</b> 9:30 AM <br /><b>Meeting Type</b> BB = Big Book meeting 
+				  	    <b>Sundays From</b>  8:00 AM <b>to</b> 9:00 AM <br /><b>Meeting Type</b> C = Closed Discussion meeting 
 			 			<br />
                     	<br />
                     	
-				  	    <b>Mondays From</b>  8:30 AM <b>to</b> 9:30 AM <br /><b>Meeting Type</b> C = Closed Discussion meeting 
+				  	    <b>Thursdays From</b>  8:30 AM <b>to</b> 9:30 AM <br /><b>Meeting Type</b> BB = Big Book meeting 
 			 			<br />
                     	<br />
                     	
@@ -2557,6 +2553,10 @@ table thead th {
                     	<br />
                     	
 				  	    <b>Tuesdays From</b>  8:30 AM <b>to</b> 9:30 AM <br /><b>Meeting Type</b> C = Closed Discussion meeting <br /><b>Special Interest</b> Promises
+			 			<br />
+                    	<br />
+                    	
+				  	    <b>Mondays From</b>  8:30 AM <b>to</b> 9:30 AM <br /><b>Meeting Type</b> C = Closed Discussion meeting 
 			 			<br />
                     	<br />
                     	
@@ -2572,14 +2572,6 @@ table thead th {
 			 			<br />
                     	<br />
                     	
-				  	    <b>Mondays From</b>  10:00 AM <b>to</b> 11:00 AM <br /><b>Meeting Type</b> B = Beginners meeting 
-			 			<br />
-                    	<br />
-                    	
-				  	    <b>Sundays From</b>  10:00 AM <b>to</b> 11:00 AM <br /><b>Meeting Type</b> S = Step meeting 
-			 			<br />
-                    	<br />
-                    	
 				  	    <b>Wednesdays From</b>  10:00 AM <b>to</b> 11:00 AM <br /><b>Meeting Type</b> C = Closed Discussion meeting 
 			 			<br />
                     	<br />
@@ -2588,7 +2580,15 @@ table thead th {
 			 			<br />
                     	<br />
                     	
+				  	    <b>Mondays From</b>  10:00 AM <b>to</b> 11:00 AM <br /><b>Meeting Type</b> B = Beginners meeting 
+			 			<br />
+                    	<br />
+                    	
 				  	    <b>Saturdays From</b>  10:00 AM <b>to</b> 11:00 AM <br /><b>Meeting Type</b> C = Closed Discussion meeting <br /><b>Special Interest</b> Children Welcome
+			 			<br />
+                    	<br />
+                    	
+				  	    <b>Sundays From</b>  10:00 AM <b>to</b> 11:00 AM <br /><b>Meeting Type</b> S = Step meeting 
 			 			<br />
                     	<br />
                     	
@@ -2600,14 +2600,6 @@ table thead th {
 			 			<br />
                     	<br />
                     	
-				  	    <b>Mondays From</b>  12:30 PM <b>to</b> 1:30 PM <br /><b>Meeting Type</b> B = Beginners meeting 
-			 			<br />
-                    	<br />
-                    	
-				  	    <b>Sundays From</b>  12:30 PM <b>to</b> 1:30 PM <br /><b>Meeting Type</b> C = Closed Discussion meeting 
-			 			<br />
-                    	<br />
-                    	
 				  	    <b>Wednesdays From</b>  12:30 PM <b>to</b> 1:30 PM <br /><b>Meeting Type</b> S = Step meeting 
 			 			<br />
                     	<br />
@@ -2616,11 +2608,15 @@ table thead th {
 			 			<br />
                     	<br />
                     	
+				  	    <b>Mondays From</b>  12:30 PM <b>to</b> 1:30 PM <br /><b>Meeting Type</b> B = Beginners meeting 
+			 			<br />
+                    	<br />
+                    	
 				  	    <b>Saturdays From</b>  12:30 PM <b>to</b> 1:30 PM <br /><b>Meeting Type</b> C = Closed Discussion meeting 
 			 			<br />
                     	<br />
                     	
-				  	    <b>Sundays From</b>  2:00 PM <b>to</b> 3:00 PM <br /><b>Meeting Type</b> C = Closed Discussion meeting <br /><b>Special Interest</b> Men
+				  	    <b>Sundays From</b>  12:30 PM <b>to</b> 1:30 PM <br /><b>Meeting Type</b> C = Closed Discussion meeting 
 			 			<br />
                     	<br />
                     	
@@ -2628,7 +2624,15 @@ table thead th {
 			 			<br />
                     	<br />
                     	
+				  	    <b>Sundays From</b>  2:00 PM <b>to</b> 3:00 PM <br /><b>Meeting Type</b> C = Closed Discussion meeting <br /><b>Special Interest</b> Men
+			 			<br />
+                    	<br />
+                    	
 				  	    <b>Saturdays From</b>  4:00 PM <b>to</b> 5:00 PM <br /><b>Meeting Type</b> S = Step meeting <br /><b>Special Interest</b> Steps 1-2-3
+			 			<br />
+                    	<br />
+                    	
+				  	    <b>Sundays From</b>  4:00 PM <b>to</b> 5:00 PM <br /><b>Meeting Type</b> C = Closed Discussion meeting <br /><b>Special Interest</b> As Bill Sees It
 			 			<br />
                     	<br />
                     	
@@ -2640,19 +2644,15 @@ table thead th {
 			 			<br />
                     	<br />
                     	
-				  	    <b>Mondays From</b>  4:00 PM <b>to</b> 5:00 PM <br /><b>Meeting Type</b> B = Beginners meeting 
-			 			<br />
-                    	<br />
-                    	
 				  	    <b>Wednesdays From</b>  4:00 PM <b>to</b> 5:00 PM <br /><b>Meeting Type</b> B = Beginners meeting 
 			 			<br />
                     	<br />
                     	
-				  	    <b>Sundays From</b>  4:00 PM <b>to</b> 5:00 PM <br /><b>Meeting Type</b> C = Closed Discussion meeting <br /><b>Special Interest</b> As Bill Sees It
+				  	    <b>Tuesdays From</b>  4:00 PM <b>to</b> 5:00 PM <br /><b>Meeting Type</b> BB = Big Book meeting 
 			 			<br />
                     	<br />
                     	
-				  	    <b>Tuesdays From</b>  4:00 PM <b>to</b> 5:00 PM <br /><b>Meeting Type</b> BB = Big Book meeting 
+				  	    <b>Mondays From</b>  4:00 PM <b>to</b> 5:00 PM <br /><b>Meeting Type</b> B = Beginners meeting 
 			 			<br />
                     	<br />
                     	
@@ -2661,6 +2661,10 @@ table thead th {
                     	<br />
                     	
 				  	    <b>Saturdays From</b>  6:15 PM <b>to</b> 7:15 PM <br /><b>Meeting Type</b> B = Beginners meeting 
+			 			<br />
+                    	<br />
+                    	
+				  	    <b>Sundays From</b>  6:15 PM <b>to</b> 7:15 PM <br /><b>Meeting Type</b> OD = Open Discussion meeting 
 			 			<br />
                     	<br />
                     	
@@ -2676,10 +2680,6 @@ table thead th {
 			 			<br />
                     	<br />
                     	
-				  	    <b>Sundays From</b>  6:15 PM <b>to</b> 7:15 PM <br /><b>Meeting Type</b> OD = Open Discussion meeting 
-			 			<br />
-                    	<br />
-                    	
 				  	    <b>Tuesdays From</b>  6:15 PM <b>to</b> 7:15 PM <br /><b>Meeting Type</b> S = Step meeting 
 			 			<br />
                     	<br />
@@ -2688,15 +2688,15 @@ table thead th {
 			 			<br />
                     	<br />
                     	
+				  	    <b>Sundays From</b>  8:00 PM <b>to</b> 9:00 PM <br /><b>Meeting Type</b> C = Closed Discussion meeting <br /><b>Special Interest</b> Promises
+			 			<br />
+                    	<br />
+                    	
 				  	    <b>Fridays From</b>  8:00 PM <b>to</b> 9:00 PM <br /><b>Meeting Type</b> B = Beginners meeting 
 			 			<br />
                     	<br />
                     	
 				  	    <b>Wednesdays From</b>  8:00 PM <b>to</b> 9:00 PM <br /><b>Meeting Type</b> BB = Big Book meeting 
-			 			<br />
-                    	<br />
-                    	
-				  	    <b>Sundays From</b>  8:00 PM <b>to</b> 9:00 PM <br /><b>Meeting Type</b> C = Closed Discussion meeting <br /><b>Special Interest</b> Promises
 			 			<br />
                     	<br />
                     	
@@ -2716,15 +2716,15 @@ table thead th {
 			 			<br />
                     	<br />
                     	
+				  	    <b>Sundays From</b>  10:00 PM <b>to</b> 11:00 PM <br /><b>Meeting Type</b> C = Closed Discussion meeting 
+			 			<br />
+                    	<br />
+                    	
 				  	    <b>Fridays From</b>  10:00 PM <b>to</b> 11:00 PM <br /><b>Meeting Type</b> C = Closed Discussion meeting 
 			 			<br />
                     	<br />
                     	
 				  	    <b>Thursdays From</b>  10:00 PM <b>to</b> 11:00 PM <br /><b>Meeting Type</b> S = Step meeting 
-			 			<br />
-                    	<br />
-                    	
-				  	    <b>Sundays From</b>  10:00 PM <b>to</b> 11:00 PM <br /><b>Meeting Type</b> C = Closed Discussion meeting 
 			 			<br />
                     	<br />
                     	
