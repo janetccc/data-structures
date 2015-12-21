@@ -1,7 +1,7 @@
 var pg = require('pg');
 
 // add connection string here
-var conString = "postgres://janet:newyorkny@data-structures-janet.clvorhidqxm5.us-east-1.rds.amazonaws.com:5432/postgres";
+var conString = "postgres://janet:newyorkny@data-structures.ceea2ymizbfi.us-west-2.rds.amazonaws.com:5432/postgres";
 
 var five = require("johnny-five");
 // var timestamp =  Date().toString();

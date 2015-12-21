@@ -1416,11 +1416,11 @@ table thead th {
                     </td>
                     <td style="border-bottom:1px solid #e3e3e3;width:350px;" valign="top">
                    	 	
-				  	    <b>Fridays From</b>  7:00 PM <b>to</b> 8:00 PM <br /><b>Meeting Type</b> B = Beginners meeting 
+				  	    <b>Mondays From</b>  7:00 PM <b>to</b> 8:00 PM <br /><b>Meeting Type</b> S = Step meeting 
 			 			<br />
                     	<br />
                     	
-				  	    <b>Mondays From</b>  7:00 PM <b>to</b> 8:00 PM <br /><b>Meeting Type</b> S = Step meeting 
+				  	    <b>Fridays From</b>  7:00 PM <b>to</b> 8:00 PM <br /><b>Meeting Type</b> B = Beginners meeting 
 			 			<br />
                     	<br />
                     	

@@ -4,123 +4,117 @@ var cheerio = require('cheerio');
 var async = require('async'); // npm install async
 var request = require('request'); // npm install request
 
+var root = '/home/ubuntu/workspace/';
+
 var urlContainer = [];
 var fileContainer = [];
-
-var content = fs.readFileSync('/home/ubuntu/workspace/data/aameeting02M.txt');
-
-var $ = cheerio.load(content);
 
 var apiKey = process.env.API_KEY;
 var meetingsData = [];
 var count = 0;
 
+// function makeMeetingGroup () {
+//     var thisMeetingGroup = {}; 
+    // thisMeetingGroup.meetingName = //PARSE HERE;
+    
+//     meetingsData.push(thisMeetingGroup);
+// }
+
+var allZone = [];
+var meetingAmounts = [];
 var locationName = [];
 var groupName = [];
 var geoCode = [];
 var addressLine1 = [];
 var addressLine1Detail = [];
 var addressLine2 = [];
+var zipcode = [];
 var meetingNotes = [];
 var meetingAccess = [];
-var meetingStart2Time = [];
+var meetingStartTime = [];
 var meetingEndTime = [];
 var meetingDay = [];
 var meetingType = [];
 var meetingInterest = [];
 var finalData = [];
-
-var meeting0 = {};
-var meeting1 = {};
-var meeting2 = {};
-var meeting3 = {};
-var meeting4 = {};
-var meeting5 = {};
-var meeting6 = {};
-var meeting7 = {};
-var meeting8 = {};
-var meeting9 = {};
-var meeting10 = {};
-var meeting11 = {};
-var meeting12 = {};
-var meeting13 = {};
-var meeting14 = {};
-var meeting15 = {};
-var meeting16 = {};
-var meeting17 = {};
-var meeting18 = {};
-var meeting19 = {};
-var meeting20 = {};
-var meeting21 = {};
-var meeting22 = {};
-var meeting23 = {};
-var meeting24 = {};
-var meeting25 = {};
-var meeting26 = {};
-var meeting27 = {};
-var finalObject = {};
-var zone = 0;
+var finalObject = [];
 
 ///-----------------------
 
+var zone = 1;
+var zoneFile = root + 'data/aameeting' + zone + 'M.txt';
+var content = fs.readFileSync(zoneFile);
+var $ = cheerio.load(content);
 
 async.waterfall([
-  createRawDataTxt,
-  parseZones
+    parseData,
+    getGeoData,
+
+    createFinalObject   
 ], function (err, result) {
-  console.log('END MAIN WATERFALL');
+	console.log('groups:' + meetingAmounts); 
+    console.log('!!!completed all!!!');        
 });
-    
-    
 
-
-function parseZones () {
-  async.eachSeries(fileContainer, function (file, callback) {
-    console.log(file);
-    console.log('zone: ' + zone);
-    cleanData();
-    zone++;
-    callback(); // Alternatively: callback(new Error());
-  }, function (err) {
-    if (err) { throw err; }
-    console.log('Well done :-)!');
-  });
-}
-
-
-
-
-// function parseData() {
-//     async.waterfall([
-//         parseData();// part 1
-//     ], function (err, result) {
-        
-//     }
+// function clearBackslash(input){
+// 	var result = JSON.stringify(input[0]);
+// 	console.log(result);
+// 	result = result.replace(/\"/g, '"');
+// 	result = result.replace(/\\/g, '');
+// 	input = result;
 // }
 
-// function parseData() {
-//     async.waterfall([
-//         createRawDataTxt, //GETTING ALL RAW DATA FROM WEBSITE TO TXT
-//         cleanData//get data ready for mongo
-//     ], function (err, result) {
-//     // result now equals 'done' 
-//         console.log('!!!completed part 1!!!');
-//     });
-// }
-
-//GETTING ALL RAW DATA FROM WEBSITE TO TXT
-function createRawDataTxt(callback) {
+function parseData(callback) {
     async.waterfall([
         createURL,
         createFileNames,
-        getMeetingFromSite
-    ], function (err, result) {
-        // result now equals 'done' 
-        console.log('obtaining all data from site to txt');
-        console.log('---------');
-        callback(null);
+        getMeetingFromSite, //GETTING ALL RAW DATA FROM WEBSITE TO TXT
+        parseZones
+    ], function (err, result) { 
+        console.log('!!!completed part 1!!!'); 
+        callback();       
     });
 }
+
+function parseZones (callback) {
+    async.eachSeries(fileContainer, function (file, callback) {
+        zoneFile = 'data/aameeting' + zone + 'M.txt';
+        content = fs.readFileSync(zoneFile);
+        $ = cheerio.load(content);
+
+        //cleaning data
+        getTextData();
+        meetingAmounts.push(groupName.length);
+        console.log('zone: ' + zone + '; number of meetings: ' + groupName.length);
+        getMeetingSection();
+        // inputData();
+ 
+        //continue to next zone
+        if (zone >= 10 ) {
+            zone = 10;
+        } else if (zone <= 10) {
+            zone++;
+        }
+
+        callback(); // Alternatively: callback(new Error());
+
+    }, function (err) {
+        if (err) { throw err; }
+        console.log('parsed data from all zones!');
+        callback();
+    });
+}
+
+// function sectionOut() {
+// 	async.waterfall([
+//         getGeoData,
+//         // cleanData,  //get data ready for mongo
+//         createFinalObject
+//     ], function (err, result) {
+//     // result now equals 'done' 
+//         console.log('!!!completed part 1!!!');        
+//     });
+// }
 
 function createURL (callback) { //create URL of aa website
     for (var i = 1; i < 11; i++) { 
@@ -139,11 +133,7 @@ function createURL (callback) { //create URL of aa website
 function createFileNames (callback) { //create file name & location to save meeting data from website
     for (var i = 1; i < 11; i++) { 
         var file;
-        if (i == 10) {
-            file = '/home/ubuntu/workspace/data/aameeting' + i + 'M.txt';
-        } else {
-            file = '/home/ubuntu/workspace/data/aameeting0' + i + 'M.txt';
-        }
+        file = root + 'data/aameeting' + i + 'M.txt';
         fileContainer.push(file);
     }
     console.log('created fileNames');
@@ -168,23 +158,9 @@ function getMeetingFromSite (callback) { //get all meeting info from aa website
     }
 }
 
-
-
-///////step1////////
-function cleanData(callback) {//get data ready for mongo
-  async.waterfall([
-    getTextData,
-    getGeoData,
-    createFinalObject
-  ], function (err, result) {
-    console.log('completed cleaning data, ready to put into mongo');
-    console.log('---------');
-    callback();
-  });
-}
-
 function getGeoData (callback) {
     async.eachSeries(addressLine1, function(value, callback) {
+    	// console.log('in get geo data ' + addressLine1.length);
         var apiRequest = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + value.split(' ').join('+') + '&key=' + apiKey;
         var thisMeeting = new Object;
         thisMeeting.address = value;
@@ -193,37 +169,26 @@ function getGeoData (callback) {
             thisMeeting.latLong = JSON.parse(body).results[0].geometry.location;
             meetingsData.push(thisMeeting);
             count = count + 1;
-            // console.log('Loading: '+count+'/28');
+            console.log('Loading: '+count+'/'+groupName.length);
         });
-        setTimeout(callback, 200);
+        setTimeout(callback, 500);
     }, function() {
-        geoCode = meetingsData;
+        geoCode.push(meetingsData);
         console.log('obtained geoCode');
-        fs.writeFileSync('/home/ubuntu/workspace/data/meetings_geodataFull.txt', JSON.stringify(geoCode));
-        console.log('--file updated: meetingsData > meetings_geodataFull.txt');
-        callback(null, true);
+        // separateGeoCode(geoCode);
+        callback();
+        fs.writeFileSync(root + 'data/meetings_geodataFull.txt', JSON.stringify(geoCode));
+        // console.log('--file updated: meetingsData > meetings_geodataFull.txt');
     });
 }
 
-
-function getTextData(callback) {
-    async.waterfall([
-        textData
-    ], function (err, result) {
-        getMeetingSection();
-        console.log('obtained all text data');
-        callback(null);
-    });
-}
-
-function textData (callback) {
+function getTextData () {
     getMeetingLocationName();
     getMeetingNotes();
     getMeetingGroupName();
     getMeetingAddress();
     getMeetingDay();
     getMeetingAccess();
-    callback();
 }
 
 function getMeetingLocationName () {
@@ -279,10 +244,11 @@ function getMeetingGroupName () {
         }
         
         groupName.push(finalData);
+        allZone.push(zone);
     });
 }
 
-function getMeetingAddress () {
+function getMeetingAddress (callback) {
     //parse all data
     $('tbody').find('tr').each(function(a, elem){
         var rawData = [];
@@ -292,18 +258,81 @@ function getMeetingAddress () {
         addressLine1Detail.push(getAddress1('detail'));
         rawData = $(elem).find('td').eq(0).html().split('<br>')[3].trim();
         addressLine2.push(rawData.split('100')[0].replace('NY', '').trim());
+        zipcode.push(getZipcode());
         
         function getAddress1 (section) {
             rawData = $(elem).find('td').eq(0).html().split('<br>')[2].trim().replace('(', ',');
-            
+
             if (section == 'street') {
-                if (rawData.indexOf('Strert') > -1) { // Correct Spellinsg
+                if (rawData.indexOf('- ') > -1) {
+                    rawData = rawData.substring(0, rawData.indexOf('-')) + ',';
+                } 
+
+                if (rawData.indexOf('-208') > -1) {
+                    rawData = rawData.replace('-208', '');
+                } 
+
+                if (rawData.indexOf('58-66') > -1) {
+                    rawData = rawData.replace('-66', '');
+                } 
+
+                if (rawData.indexOf('@') > -1) {
+                    rawData = rawData.substring(0, rawData.indexOf('@')) + ',';
+                } 
+
+                if (rawData.indexOf('Rm 306') > -1) {
+                    rawData = rawData.split(' Rm 306')[0] + ',';
+                } 
+
+                if (rawData.indexOf('Good Shepard') > -1) {
+                    rawData = rawData.replace('Church of the Good Shepard, ', '');
+                } 
+
+                if (rawData.indexOf('Strert') > -1) { // Correct Spelling
                     rawData = rawData.replace('Strert', 'Street');
-                } else if (rawData.indexOf('W.') > -1) { // Change format, for consistency
+                } 
+
+                if (rawData.indexOf('Street.') > -1) { // Correct Spelling
+                    rawData = rawData.replace('Street.', 'Street,');
+                } 
+
+                if (rawData.indexOf('St.') > -1 && rawData.indexOf('Mark') == -1) { // Change format, for consistency
+                    rawData = rawData.replace('St.', 'Street');
+                }
+
+                if (rawData.indexOf('W.') > -1) { // Change format, for consistency
                     rawData = rawData.replace('W.', 'West');
-                } else if (rawData.indexOf('Bowery Street') > -1) { // Change format, for consistency 
+                } 
+
+                if (rawData.indexOf('W ') > -1) { // Change format, for consistency
+                    rawData = rawData.replace('W ', 'West ');    
+                }
+
+                if (rawData.indexOf('E ') > -1) { // Change format, for consistency
+                    rawData = rawData.replace('E ', 'East ');    
+                }
+
+                if (rawData.indexOf('St. Mark') > -1) { // Change format, for consistency
+                    rawData = rawData.replace('St. Mark&apos;s', 'St Marks');
+                }
+
+                if (rawData.indexOf('Bowery Street') > -1) { // Change format, for consistency 
                     rawData = rawData.replace(' Street', '').substring(0, rawData.indexOf(',')).trim();
                 }
+
+                if (rawData.indexOf('West &amp; 76th') > -1) { // Change format, for consistency 
+                    rawData = rawData.replace('&amp;', 'and').trim();
+                }
+
+                if (rawData.indexOf('Street &amp; Bennett') > -1) { // Change format, for consistency 
+                    rawData = rawData.replace('&amp;', 'and').trim();
+                }
+
+                if (rawData.indexOf('Powell Blvd.') > -1) { // Change format, for consistency 
+                    rawData = rawData.replace('Blvd.', 'Boulevard').trim();
+                }
+
+
                 cleanUp1 = rawData.substring(0, rawData.indexOf(','));
                 finalData = cleanUp1 + ', New York, NY';
                 
@@ -315,7 +344,51 @@ function getMeetingAddress () {
             return finalData;
         } //end of getAddress1 func
 
+        function getZipcode() {
+            rawData = $(elem).find('td').eq(0).html().split('<br>')[3];
+
+            if (rawData.indexOf('100') > 0) {
+                cleanUp1 = rawData.split('100')[1];
+            } else if (rawData.indexOf('NY 10') > 0) {
+                cleanUp1 = rawData.split('10')[1];
+            } else if (rawData.indexOf(') 10') > 0) {  
+                cleanUp1 = rawData.split('10')[1];
+            } else {
+                var line2 = $(elem).find('td').eq(0).html().split('<br>')[2];
+                
+                if (line2.indexOf('100') > 0) {
+                    cleanUp1 = line2.split('100')[1];
+                    // console.log('see: ' + cleanUp1);
+
+                    if (cleanUp1 == '44,') {
+                        cleanUp1 = cleanUp1.replace(',', '');
+                    }
+
+                } else if (line2.indexOf(' 10') > 0) {
+                    cleanUp1 = line2.split('10')[1];
+                }
+            }
+
+            if (cleanUp1 == '') {
+                finalData = cleanUp1;
+            } else if (cleanUp1*1 >= 100) {
+                finalData = '10' + cleanUp1;
+            } else if (cleanUp1*1 < 100) {
+                finalData = '100' + cleanUp1;
+            } else  {
+                // console.log('here');
+                finalData = cleanUp1;
+                if (cleanUp1 == '44,') {
+                    finalData = '10044';
+                    // console.log('yes ' + cleanUp1);
+                }
+            }
+
+            return finalData.trim();
+        }
+
     });
+
 }
 
 function getMeetingDay () {
@@ -392,10 +465,11 @@ function getMeetingDay () {
 
 }
 
-function getMeetingSection () {
+function getMeetingSection (callback) {
     for (var i = 0; i < groupName.length; i++) { 
         breakdownTimes(meetingDay[i], i);
     }
+    // callback();
 }
 
 var meetingSection = [];
@@ -415,7 +489,7 @@ function breakdownTimes(breakpoint, x){
         section.endTime = endHolder[i];
         section.type = typeHolder[i];
         section.interest = interestHolder[i];
-        allSections.push(JSON.stringify(section));
+        allSections.push(section);
     }
     meetingSection.push(allSections);
 }
@@ -436,35 +510,49 @@ function findTargetLocation (string, target) {
     return indexContainer;
 }
 
-function inputData (meetingNumber, a){
-    for (var i = 0; i < groupName.length; i++) { 
-        meetingNumber.zone = zone;
-        meetingNumber.locationName = locationName[a];
-        meetingNumber.groupName = groupName[a];
-        meetingNumber.latLong = geoCode[a];
-        meetingNumber.addressLine1 = addressLine1[a];
-        meetingNumber.addressLine1Detail = addressLine1Detail[a];
-        meetingNumber.addressLine2 = addressLine2[a];
-        meetingNumber.notes = meetingNotes[a];
-        meetingNumber.access = meetingAccess[a];
-        meetingNumber.section = meetingSection[a];
-    }
-    finalObject.push(JSON.stringify(meetingNumber));
+var separatedGeoCode = [];
+
+function separateGeoCode(input){
+	var text = [];
+	text.push(input);
+	var step1 = text[0];
+	for (var i = 0; i < 371; i++) { 
+		cleanUp1 = step1.split(',')[i].replace('}]]', '').replace('[[{', '');
+		separatedGeocode.push(cleanUp1);	
+	}
+	console.log(separatedGeoCode[0]);
+	console.log(separatedGeoCode[2]);
 }
 
-
-
-function createFinalObject(status, callback) {
-    if (status == true) {
-        // finalObject = [inputData(meeting0, 0), inputData(meeting1, 1), inputData(meeting2, 2), inputData(meeting3, 3), inputData(meeting4, 4), inputData(meeting5, 5), inputData(meeting6, 6), inputData(meeting7, 7), inputData(meeting8, 8), inputData(meeting9, 9), inputData(meeting10, 10), inputData(meeting11, 11), inputData(meeting12, 12), inputData(meeting13, 13), inputData(meeting14, 14), inputData(meeting15, 15), inputData(meeting16, 16), inputData(meeting17, 17), inputData(meeting18, 18), inputData(meeting19, 19), inputData(meeting20, 20), inputData(meeting21, 21), inputData(meeting22, 22), inputData(meeting23, 23), inputData(meeting24, 24), inputData(meeting25, 25), inputData(meeting26, 26), inputData(meeting27, 27)];
-        console.log(finalObject);
-        fs.writeFileSync('/home/ubuntu/workspace/data/sortedMeetings' + zone + 'M.txt', JSON.stringify(finalObject));
-        console.log('--file updated: finalObject > sortedMeetings02M.txt');
-    } else if (status == false) {
-        console.log('not ready');
-    } else {
-        console.log('error');
-        console.log('status: ' + status);
+function inputData (callback){ 
+    var meeting = {};
+    var meetingContainer = [];
+    for (var i = 0; i < groupName.length; i++) { 
+        meeting.zone = allZone[i];
+        meeting.locationName = locationName[i];
+        meeting.groupName = groupName[i];
+        // meeting.latLong = geoCode[i];
+        meeting.geoCode = separatedGeoCode[i];
+        meeting.addressLine1 = addressLine1[i];
+        meeting.addressLine1Detail = addressLine1Detail[i];
+        meeting.addressLine2 = addressLine2[i];
+        meeting.zipcode = zipcode[i];
+        meeting.notes = meetingNotes[i];
+        meeting.access = meetingAccess[i];
+        meeting.section = meetingSection[i];
+        meetingContainer.push((meeting));
     }
+    // console.log('meeting container: ' + meetingContainer);
+    // meetingContainer.replace('/', '');
+    finalObject.push(meetingContainer);
+    // console.log('finalObject: ' + finalObject);
+    // callback();
+}
+
+function createFinalObject(callback) {
+    inputData();
+    // clearBackslash(finalObject);
+    fs.writeFileSync(root + 'data/sortedMeetingsAll.txt', JSON.stringify(finalObject));
+    console.log('--file updated: finalObject > sortedMeetingsAll.txt');
     callback();
 }

@@ -1224,6 +1224,10 @@ table thead th {
                     </td>
                     <td style="border-bottom:1px solid #e3e3e3;width:350px;" valign="top">
                    	 	
+				  	    <b>Mondays From</b>  6:30 AM <b>to</b> 7:30 AM <br /><b>Meeting Type</b> C = Closed Discussion meeting <br /><b>Special Interest</b> Topic
+			 			<br />
+                    	<br />
+                    	
 				  	    <b>Tuesdays From</b>  6:30 AM <b>to</b> 7:30 AM <br /><b>Meeting Type</b> C = Closed Discussion meeting 
 			 			<br />
                     	<br />
@@ -1240,10 +1244,6 @@ table thead th {
 			 			<br />
                     	<br />
                     	
-				  	    <b>Mondays From</b>  6:30 AM <b>to</b> 7:30 AM <br /><b>Meeting Type</b> C = Closed Discussion meeting <br /><b>Special Interest</b> Topic
-			 			<br />
-                    	<br />
-                    	
 				  	    <b>Mondays From</b>  7:30 AM <b>to</b> 8:30 AM <br /><b>Meeting Type</b> S = Step meeting 
 			 			<br />
                     	<br />
@@ -1256,11 +1256,11 @@ table thead th {
 			 			<br />
                     	<br />
                     	
-				  	    <b>Fridays From</b>  7:30 AM <b>to</b> 8:30 AM <br /><b>Meeting Type</b> B = Beginners meeting 
+				  	    <b>Thursdays From</b>  7:30 AM <b>to</b> 8:30 AM <br /><b>Meeting Type</b> OD = Open Discussion meeting 
 			 			<br />
                     	<br />
                     	
-				  	    <b>Thursdays From</b>  7:30 AM <b>to</b> 8:30 AM <br /><b>Meeting Type</b> OD = Open Discussion meeting 
+				  	    <b>Fridays From</b>  7:30 AM <b>to</b> 8:30 AM <br /><b>Meeting Type</b> B = Beginners meeting 
 			 			<br />
                     	<br />
                     	
@@ -1344,6 +1344,35 @@ table thead th {
 				   
                   <tr style="margin-bottom:10px">
                     <td style="border-bottom:1px solid #e3e3e3; width:260px" valign="top">
+                    	<h4 style="margin:0;padding:0;">Golden Bridge Yoga Center</h4><br />
+				  	    <b>MEDITATION MEETING - </b><br />
+						253 Center Street, 3rd Floor, 
+						<br />(@ Broome Street) 10013
+						<br />
+						<br />
+                        
+                        <div class="detailsBox"> 
+                        	No shoes worn in meeting location. <br />A short meditation opens the meeting. 
+                        </div>
+                        
+						
+                    </td>
+                    <td style="border-bottom:1px solid #e3e3e3;width:350px;" valign="top">
+                   	 	
+				  	    <b>Mondays From</b>  5:00 PM <b>to</b> 6:00 PM <br /><b>Meeting Type</b> OD = Open Discussion meeting <br /><b>Special Interest</b> Meditation at Meeting
+			 			<br />
+                    	<br />
+                    		
+					</td> 
+                    <td style="border-bottom:1px solid #dedede; width:90px; ">
+                    	<a href="getdirections.cfm?meetingid=1415" class="GetDirections">Get Directions</a>
+                    </td>
+                  </tr>
+				  
+				
+				   
+                  <tr style="margin-bottom:10px">
+                    <td style="border-bottom:1px solid #e3e3e3; width:260px" valign="top">
                     	<h4 style="margin:0;padding:0;">St. Andrew's Church</h4><br />
 				  	    <b>PASSING THE BAR - Passing The Bar</b><br />
 						20 Cardinal Hayes Place, Enter thru driveway behind Church., 
@@ -1363,10 +1392,6 @@ table thead th {
                     </td>
                     <td style="border-bottom:1px solid #e3e3e3;width:350px;" valign="top">
                    	 	
-				  	    <b>Thursdays From</b>  1:15 PM <b>to</b> 2:15 PM <br /><b>Meeting Type</b> S = Step meeting 
-			 			<br />
-                    	<br />
-                    	
 				  	    <b>Fridays From</b>  1:15 PM <b>to</b> 2:15 PM <br /><b>Meeting Type</b> BB = Big Book meeting 
 			 			<br />
                     	<br />
@@ -1380,6 +1405,10 @@ table thead th {
                     	<br />
                     	
 				  	    <b>Wednesdays From</b>  1:15 PM <b>to</b> 2:15 PM <br /><b>Meeting Type</b> C = Closed Discussion meeting <br /><b>Special Interest</b> Promises
+			 			<br />
+                    	<br />
+                    	
+				  	    <b>Thursdays From</b>  1:15 PM <b>to</b> 2:15 PM <br /><b>Meeting Type</b> S = Step meeting 
 			 			<br />
                     	<br />
                     		
@@ -1603,7 +1632,7 @@ table thead th {
 						<br />
                         
                         <div class="detailsBox"> 
-                        	Walk thru green doors; first floor, rear. <br />Addtl meditation meeting on Sunday at 11:15 if room full 
+                        	Walk thru double doors; first floor, rear. <br />Addtl meditation meeting on Sunday at 11:15 if room full 
                         </div>
                          
 						<span style="color:darkblue; font-size:10pt;">
@@ -1622,11 +1651,11 @@ table thead th {
 			 			<br />
                     	<br />
                     	
-				  	    <b>Mondays From</b>  6:30 PM <b>to</b> 7:30 PM <br /><b>Meeting Type</b> C = Closed Discussion meeting 
+				  	    <b>Thursdays From</b>  6:30 PM <b>to</b> 7:30 PM <br /><b>Meeting Type</b> C = Closed Discussion meeting 
 			 			<br />
                     	<br />
                     	
-				  	    <b>Thursdays From</b>  6:30 PM <b>to</b> 7:30 PM <br /><b>Meeting Type</b> C = Closed Discussion meeting 
+				  	    <b>Mondays From</b>  7:00 PM <b>to</b> 8:00 PM <br /><b>Meeting Type</b> C = Closed Discussion meeting 
 			 			<br />
                     	<br />
                     		

@@ -1,0 +1,11 @@
+for (var i = 0; i < dataset.length; i++) {
+    var div = document.getElementById('div1');
+    var newColor = Math.round((0.001 * dataset[i].sensorval) * 255 ) ;
+    
+    div.innerHTML = div.innerHTML + '<div class="block" style="background: rgb(0,0,' + newColor + ')"> </div>';
+}
+        </script>
+        
+        
+    </body>
+</html> 

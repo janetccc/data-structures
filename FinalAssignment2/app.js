@@ -1,15 +1,18 @@
-var http = require('http');
+var fs = require('fs');
+var data1 = fs.readFileSync('index1.html');
+// var data2 = fs.readFileSync(__dirname + '/index2.html');
+var data3 = fs.readFileSync('index3.html');
+
+var app = require('http').createServer(handler);
+var io = require('socket.io')(app);
 var pg = require('pg');
 
-// supply connection string through an environment variable
-var conString = "postgres://janet:newyorkny@data-structures-janet.clvorhidqxm5.us-east-1.rds.amazonaws.com:5432/postgres";
-// var conString = process.env.DBHOST;
+var conString = "postgres://janet:newyorkny@data-structures.ceea2ymizbfi.us-west-2.rds.amazonaws.com:5432/postgres";
 
-//postgres://janet:newyorkny@data-structures-janet.clvorhidqxm5.us-east-1.rds.amazonaws.com:5432/postgres
+app.listen(8080);
 
-var server = http.createServer(function(req, res) {
+function handler (req, res) {
 
-    // get a pg client from the connection pool
     pg.connect(conString, function(err, client, done) {
 
         var handleError = function(err) {
@@ -33,8 +36,7 @@ var server = http.createServer(function(req, res) {
         if (handleError(err)) return;
 
         // get the total number of visits today (including the current visit)
-        // client.query('SELECT COUNT(*) AS count FROM buttondata;', function(err, result) {
-        client.query('SELECT COUNT(*) AS count FROM sensor;', function(err, result) {
+        client.query('SELECT * FROM sensor;', function(err, result) {
 
             // handle an error from the query
             if (handleError(err)) return;
@@ -42,10 +44,19 @@ var server = http.createServer(function(req, res) {
             // return the client to the connection pool for other requests to reuse
             done();
             res.writeHead(200, {'content-type': 'text/html'});
-            res.write('<h1>The button has been pressed ' + result.rows[0] + ' times.</h1>');
+            res.write(data1);
+            // res.write(data2);
+            res.write('var dataset = ' + JSON.stringify(result.rows) + ';');
+            res.write(data3);
             res.end();
         });
     });
-});
+    
+}
 
-server.listen(process.env.PORT);
+io.on('connection', function (socket) {
+  socket.on('buttonPress', function (data) {
+    io.emit('newData', { newD : 'relay data to browser' });
+    console.log('button was pressed on local client');
+  });
+});

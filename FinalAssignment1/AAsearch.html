@@ -1,0 +1,119 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>AA Meetings in Manhattan</title>
+    <style>
+        html,
+        body,
+        #map-canvas {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        
+        #firstHeading {
+            font-size: 100%;
+        }
+    </style>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+    <script>
+
+        var latNow = 40.736354;
+        var longNow = -73.999175;
+
+
+        function initialize() {
+            var mapOptions = {
+                zoom: 16,
+                center: new google.maps.LatLng(latNow, longNow)
+            }
+            var map = new google.maps.Map(document.getElementById('map-canvas'),
+                mapOptions);
+
+            setMarkers(map, meetings);
+        }
+
+        // var meetings  ;
+        var meetings = [{"_id":{"latLong":{"lat":40.748323,"lng":-73.97884499999999}},
+            "meetingGroups":[{"meetingGroup":{"meetingName":"MUSTARD SEED","meetingBuilding":"","meetingAddress1":"122 East 37th Street, New York, NY","meetingAddress3":"(Betw Park &amp; Lexington Avenues)","zipcode":"10016","meetingDetails":"Sun.7:30am,Tue.6:15pm B & Wed.6:15pm C =Meditation Wkshp., Sun.9:30am Step=Back to Basics, Fri.7:30pm=Anniv.every Fri. Thurs. 8am back room, Gratitude","meetingWheelchair":"","latLong":{"lat":40.748323,"lng":-73.97884499999999}},"meetings":{"meetingDays":["Tuesdays"],"startTimes":["8:00 PM"],"startHour":[20],"endTimes":["9:00 PM"],"meetingTypes":["Closed Discussion"],"specialInterest":[]}}]},
+        {"_id":{"latLong":{"lat":40.7385571,"lng":-73.9840372}},
+            "meetingGroups":[{"meetingGroup":{"meetingName":"MANHATTAN","meetingBuilding":"Gustavus Adolphus Church","meetingAddress1":"155 East 22nd Street, New York, NY","meetingAddress3":"Btw 3rd &amp; Lex Avenues","zipcode":"10010","meetingDetails":"Open Anniv Last Tuesday. All meetings are non-smoking.","meetingWheelchair":"","latLong":{"lat":40.7385571,"lng":-73.9840372}},"meetings":{"meetingDays":["Tuesdays"],"startTimes":["7:00 PM"],"startHour":[19],"endTimes":["8:00 PM"],"meetingTypes":["Beginners"],"specialInterest":[]}}]},
+        {"_id":{"latLong":{"lat":40.7944661,"lng":-73.9706389}},
+            "meetingGroups":[{"meetingGroup":{"meetingName":"SIXTH STREET WORKSHOP ","meetingBuilding":"Holy Name Church","meetingAddress1":"207 West 96th Street, New York, NY","meetingAddress3":"(Betw Amsterdam &amp; Broadway)","zipcode":"10025","meetingDetails":"Anniv. Last Thursday, Fri=Promises, Sat=As Bill Sees It","meetingWheelchair":"","latLong":{"lat":40.7944661,"lng":-73.9706389}},"meetings":{"meetingDays":["Tuesdays"],"startTimes":["10:00 PM"],"startHour":[22],"endTimes":["11:00 PM"],"meetingTypes":["Step"],"specialInterest":[]}}]},
+        {"_id":{"latLong":{"lat":40.7766859,"lng":-73.9613107}},
+            "meetingGroups":[{"meetingGroup":{"meetingName":"A.A. TRADITIONS AND HISTORY","meetingBuilding":"Manhattan Church of Christ","meetingAddress1":"48 East 80th Street, New York, NY","meetingAddress3":"(Betw Park &amp; Madison Avenues)","zipcode":"10021","meetingDetails":"Traditions Meeting","meetingWheelchair":"Wheelchair access","latLong":{"lat":40.7766859,"lng":-73.9613107}},"meetings":{"meetingDays":["Tuesdays"],"startTimes":["7:00 PM"],"startHour":[19],"endTimes":["8:00 PM"],"meetingTypes":["Tradition"],"specialInterest":[]}}]},
+        {"_id":{"latLong":{"lat":40.779492,"lng":-73.980262}},
+            "meetingGroups":[{"meetingGroup":{"meetingName":"ROUTES","meetingBuilding":"Phoenix House","meetingAddress1":"164 West 74 Street, New York, NY","meetingAddress3":"(Betw. Columbus and Amsterdam Avenues)","zipcode":"10024","meetingDetails":"","meetingWheelchair":"","latLong":{"lat":40.779492,"lng":-73.980262}},"meetings":{"meetingDays":["Tuesdays"],"startTimes":["7:00 PM"],"startHour":[19],"endTimes":["8:00 PM"],"meetingTypes":["Beginners"],"specialInterest":[]}}]}
+        ]
+
+        
+
+        function makeContent(cont) {
+            var contentHolder = '<div id="content">' +
+                '<div id="siteNotice">' +
+                '</div>';
+            for (var i = 0; i < cont.meetingGroups[i].meetingGroup.length; i++) {
+                contentHolder = contentHolder + '<h1 id="firstHeading" class="firstHeading">';
+                contentHolder = contentHolder + cont.meetingGroups[i].meetingGroup.meetingName + '</h1>';
+                if (cont.meetingGroups[i].meetingGroup.meetingHouse.length > 0) {
+                    contentHolder = contentHolder + '<p>' + cont.meetingGroups[i].meetingGroup.meetingHouse + '<br>';
+                }
+                contentHolder = contentHolder + cont.meetingGroups[i].meetingGroup.meetingAddress1.substr(0, cont.meetingGroups[i].meetingGroup.meetingAddress1.indexOf(',')) + '<br>';
+                contentHolder = contentHolder + cont.meetingGroups[i].meetingGroup.meetingAddress2 + '</p>';
+                contentHolder = contentHolder + '<p><b>Tuesday meetings: </b><br>';
+                for (var j = 0; j < cont.meetings[i].startTimes.length; j++) {
+                    var mt, si;
+                    mt = cont.meetingGroups[i].meetings.meetingType[j];
+
+                    if (cont.meetingGroups[i].meetings.specialInterest[j] != '') {
+                        si = cont.meetingGroups[i].meetings.specialInterest[j];
+                    }
+                    else {
+                        si = ''
+                    }
+                    contentHolder = contentHolder + cont.meetings[i].startTimes[j] + ' ' + mt + si + '<br>';
+                }
+                contentHolder = contentHolder + '</p>';
+                contentHolder = contentHolder + '<div class="iw-bottom-gradient"></div>';
+            }
+            return contentHolder;
+        }
+
+        function setMarkers(map, locations) {
+            // Add markers to the map
+            var infowindow = new google.maps.InfoWindow({
+                maxWidth: 200
+            });
+
+            for (var i = 0; i < locations.length; i++) {
+                var meeting = locations[i];
+                var myLatLng = new google.maps.LatLng(meeting._id.latLong.lat, meeting._id.latLong.lng);
+
+                var contentWindow = makeContent(meetings[i]);
+
+                var marker = new google.maps.Marker({
+                    position: myLatLng,
+                    map: map,
+                    title: "Click for meeting info",
+                    content: contentWindow,
+                });
+
+                google.maps.event.addListener(marker, 'click', function() {
+                    infowindow.setContent(this.content);
+                    infowindow.open(map, this);
+                });
+            }
+        }
+        google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+</head>
+
+<body>
+    <div id="map-canvas"></div>
+</body>
+
+</html>

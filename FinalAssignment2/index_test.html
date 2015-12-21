@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Piezo</title>
+        <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script> 
+        <style>
+        body, html {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #div1 {
+            height: 100%;
+            width: 1620px; /* 81 x 2 */
+            /*position: fixed;*/
+            display: block;
+            left: 0;
+        }
+        
+        #div1 div {
+            display: inline-block;   
+            
+        }
+            .block {
+                height: 100%;
+                width: 20px;
+                float: right;
+            }
+        </style>
+    </head>
+    
+    <body>
+        
+        <div id="div1"></div>
+        
+        <script type="text/javascript">
+
+var dataset = [
+{
+message: 549,
+datetime: "2015-12-19T14:51:17.419Z",
+},{
+message: 327,
+datetime: "2015-12-19T14:51:17.528Z",
+},{
+message: 558,
+datetime: "2015-12-19T14:51:18.029Z",
+},{
+message: 567,
+datetime: "2015-12-19T14:51:18.529Z",
+},{
+message: 559,
+datetime: "2015-12-19T14:51:19.030Z",
+},{
+message: 558,
+datetime: "2015-12-19T14:51:19.531Z",
+},{
+message: 558,
+datetime: "2015-12-19T14:51:20.033Z",
+},{
+message: 554,
+datetime: "2015-12-19T14:51:20.536Z",
+},{
+message: 555,
+datetime: "2015-12-19T14:51:21.038Z",
+},{
+message: 555,
+datetime: "2015-12-19T14:51:21.537Z",
+},{
+message: 550,
+datetime: "2015-12-19T14:51:22.540Z",
+},{
+message: 550,
+datetime: "2015-12-19T14:51:23.541Z",
+},{
+message: 540,
+datetime: "2015-12-19T14:51:24.542Z",
+},{
+message: 542,
+datetime: "2015-12-19T14:51:25.043Z",
+},{
+message: 537,
+datetime: "2015-12-19T14:51:26.548Z",
+},{
+message: 498,
+datetime: "2015-12-19T14:51:27.049Z",
+},{
+message: 552,
+datetime: "2015-12-19T14:51:27.550Z",
+},{
+message: 633,
+datetime: "2015-12-19T14:51:28.050Z",
+},{
+message: 545,
+datetime: "2015-12-19T14:51:28.551Z",
+},{
+message: 578,
+datetime: "2015-12-19T14:51:29.055Z",
+},{
+message: 539,
+datetime: "2015-12-19T14:51:29.557Z",
+},{
+message: 612,
+datetime: "2015-12-19T14:51:30.057Z",
+},{
+message: 540,
+datetime: "2015-12-19T14:51:30.558Z",
+},{
+message: 520,
+datetime: "2015-12-19T14:51:31.059Z",
+},{
+message: 456,
+datetime: "2015-12-19T14:51:31.560Z",
+},{
+message: 523,
+datetime: "2015-12-19T14:51:32.564Z",
+},{
+message: 590,
+datetime: "2015-12-19T14:51:33.065Z",
+},{
+message: 232,
+datetime: "2015-12-19T14:51:33.566Z",
+},{
+message: 499,
+datetime: "2015-12-19T14:51:34.067Z",
+},{
+message: 431,
+datetime: "2015-12-19T14:51:34.570Z",
+},{
+message: 676,
+datetime: "2015-12-19T14:51:35.075Z",
+},{
+message: 486,
+datetime: "2015-12-19T14:51:35.575Z",
+},{
+message: 488,
+datetime: "2015-12-19T14:51:36.076Z",
+},{
+message: 569,
+datetime: "2015-12-19T14:51:36.576Z",
+},{
+message: 451,
+datetime: "2015-12-19T14:51:37.082Z",
+},{
+message: 437,
+datetime: "2015-12-19T14:51:37.578Z",
+},{
+message: 910,
+datetime: "2015-12-19T14:51:38.080Z",
+},{
+message: 557,
+datetime: "2015-12-19T14:51:38.583Z",
+},{
+message: 523,
+datetime: "2015-12-19T14:51:39.084Z",
+},{
+message: 542,
+datetime: "2015-12-19T14:51:39.584Z",
+},{
+message: 302,
+datetime: "2015-12-19T14:51:40.085Z",
+},{
+message: 530,
+datetime: "2015-12-19T14:51:40.586Z",
+},{
+message: 509,
+datetime: "2015-12-19T14:51:41.091Z",
+},{
+message: 556,
+datetime: "2015-12-19T14:51:41.591Z",
+},{
+message: 494,
+datetime: "2015-12-19T14:51:42.096Z",
+},{
+message: 504,
+datetime: "2015-12-19T14:51:42.596Z",
+},{
+message: 817,
+datetime: "2015-12-19T14:51:43.098Z",
+},{
+message: 544,
+datetime: "2015-12-19T14:51:43.598Z",
+},{
+message: 800,
+datetime: "2015-12-19T14:51:44.098Z",
+},{
+message: 614,
+datetime: "2015-12-19T14:51:44.600Z",
+},{
+message: 542,
+datetime: "2015-12-19T14:51:45.103Z",
+},{
+message: 689,
+datetime: "2015-12-19T14:51:45.605Z",
+},{
+message: 430,
+datetime: "2015-12-19T14:51:46.105Z",
+},{
+message: 545,
+datetime: "2015-12-19T14:51:46.606Z",
+},{
+message: 57,
+datetime: "2015-12-19T14:51:47.107Z",
+},{
+message: 191,
+datetime: "2015-12-19T14:51:47.607Z",
+},{
+message: 294,
+datetime: "2015-12-19T14:51:48.112Z",
+},{
+message: 615,
+datetime: "2015-12-19T14:51:48.616Z",
+},{
+message: 600,
+datetime: "2015-12-19T14:51:49.114Z",
+},{
+message: 474,
+datetime: "2015-12-19T14:51:49.618Z",
+},{
+message: 506,
+datetime: "2015-12-19T14:51:50.119Z",
+},{
+message: 448,
+datetime: "2015-12-19T14:51:50.616Z",
+},{
+message: 462,
+datetime: "2015-12-19T14:51:51.120Z",
+},{
+message: 108,
+datetime: "2015-12-19T14:51:51.621Z",
+},{
+message: 391,
+datetime: "2015-12-19T14:51:52.126Z",
+},{
+message: 331,
+datetime: "2015-12-19T14:51:52.626Z",
+},{
+message: 655,
+datetime: "2015-12-19T14:51:53.130Z",
+},{
+message: 550,
+datetime: "2015-12-19T14:51:53.631Z",
+},{
+message: 497,
+datetime: "2015-12-19T14:51:54.132Z",
+},{
+message: 509,
+datetime: "2015-12-19T14:51:54.636Z",
+},{
+message: 440,
+datetime: "2015-12-19T14:51:55.133Z",
+},{
+message: 953,
+datetime: "2015-12-19T14:51:56.135Z",
+},{
+message: 0,
+datetime: "2015-12-19T14:51:56.641Z",
+},{
+message: 502,
+datetime: "2015-12-19T14:51:57.139Z",
+},{
+message: 608,
+datetime: "2015-12-19T14:51:57.644Z",
+},{
+message: 552,
+datetime: "2015-12-19T14:51:58.144Z",
+},{
+message: 658,
+datetime: "2015-12-19T14:51:58.643Z",
+},{
+message: 406,
+datetime: "2015-12-19T14:51:59.147Z",
+},{
+message: 874,
+datetime: "2015-12-19T14:51:59.654Z",
+},{
+message: 904,
+datetime: "2015-12-19T14:52:00.155Z",
+},{
+message: 1023,
+datetime: "2015-12-19T14:52:00.656Z"
+}
+];
+
+for (var i = 0; i < dataset.length; i++) {
+    var div = document.getElementById('div1');
+    var newColor = Math.round((0.001 * dataset[i].message) * 255 ) ;
+    
+    div.innerHTML = div.innerHTML + '<div class="block" style="background: rgb(0,0,'+ newColor +')"> </div>';
+}
+        </script>
+        
+        
+    </body>
+</html> 

@@ -2,7 +2,7 @@ var http = require('http');
 var pg = require('pg');
 
 // supply connection string through an environment variable
-var conString = "postgres://janet:newyorkny@data-structures-janet.clvorhidqxm5.us-east-1.rds.amazonaws.com:5432/postgres";
+var conString = "postgres://janet:newyorkny@data-structures.ceea2ymizbfi.us-west-2.rds.amazonaws.com:5432/postgres";
 // var conString = process.env.DBHOST;
 
 //postgres://janet:newyorkny@data-structures-janet.clvorhidqxm5.us-east-1.rds.amazonaws.com:5432/postgres
@@ -34,7 +34,7 @@ var server = http.createServer(function(req, res) {
 
         // get the total number of visits today (including the current visit)
         // client.query('SELECT COUNT(*) AS count FROM buttondata;', function(err, result) {
-        client.query('SELECT COUNT(*) AS count FROM sensor;', function(err, result) {
+        client.query('SELECT * FROM sensor;', function(err, result) {
 
             // handle an error from the query
             if (handleError(err)) return;
@@ -42,7 +42,17 @@ var server = http.createServer(function(req, res) {
             // return the client to the connection pool for other requests to reuse
             done();
             res.writeHead(200, {'content-type': 'text/html'});
-            res.write('<h1>The button has been pressed ' + result.rows[0] + ' times.</h1>');
+            
+            var allData = JSON.stringify(result.rows);
+            
+            for (var i = 0; i < allData.length; i++) { 
+                var sensor = JSON.stringify(result.rows[i].sensorval);
+                var time = JSON.stringify(result.rows[i].datetime);
+                res.write('<div style="height: 20px; width: 20px;">' + sensor + '</div>');
+                res.write('<p>' +time + '</p>');
+            }
+            // // res.write('<h1>The button has been pressed ' + time + ' times.</h1>');
+            // res.write('<h1>The button has been pressed ' + result.rows.length + ' times.</h1>');
             res.end();
         });
     });

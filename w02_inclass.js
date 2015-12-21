@@ -15,9 +15,3 @@ $('h4').each(function(i, elem) {
     }); //next chooses next element; find li
   }
 });
-
-// .trim() - method that gets rid of all leading and ending spaces
-
-// var a = "                     Why are all these spaces here!?                  "
-// a = "                     Why are all these spaces here!?                  "
-// a.trim() = "Why are all these spaces here!?"

@@ -1,0 +1,65 @@
+      function makeContent(cont) {
+            var contentHolder = '<div id="content">' +
+                '<div id="siteNotice">' +
+                '</div>';
+            for (var i = 0; i < cont.meetingGroups[i].meetingGroup.length; i++) {
+                contentHolder = contentHolder + '<h1 id="firstHeading" class="firstHeading">';
+                contentHolder = contentHolder + cont.meetingGroups[i].meetingGroup.meetingName + '</h1>';
+                if (cont.meetingGroups[i].meetingGroup.meetingHouse.length > 0) {
+                    contentHolder = contentHolder + '<p>' + cont.meetingGroups[i].meetingGroup.meetingHouse + '<br>';
+                }
+                contentHolder = contentHolder + cont.meetingGroups[i].meetingGroup.meetingAddress1.substr(0, cont.meetingGroups[i].meetingGroup.meetingAddress1.indexOf(',')) + '<br>';
+                contentHolder = contentHolder + cont.meetingGroups[i].meetingGroup.meetingAddress2 + '</p>';
+                contentHolder = contentHolder + '<p><b>Tuesday meetings: </b><br>';
+                for (var j = 0; j < cont.meetings[i].startTimes.length; j++) {
+                    var mt, si;
+                    mt = cont.meetingGroups[i].meetings.meetingType[j];
+
+                    if (cont.meetingGroups[i].meetings.specialInterest[j] != '') {
+                        si = cont.meetingGroups[i].meetings.specialInterest[j];
+                    }
+                    else {
+                        si = ''
+                    }
+                    contentHolder = contentHolder + cont.meetings[i].startTimes[j] + ' ' + mt + si + '<br>';
+                }
+                contentHolder = contentHolder + '</p>';
+                contentHolder = contentHolder + '<div class="iw-bottom-gradient"></div>';
+            }
+            return contentHolder;
+        }
+
+        function setMarkers(map, locations) {
+            // Add markers to the map
+            var infowindow = new google.maps.InfoWindow({
+                maxWidth: 200
+            });
+
+            for (var i = 0; i < locations.length; i++) {
+                var meeting = locations[i];
+                var myLatLng = new google.maps.LatLng(meeting._id.latLong.lat, meeting._id.latLong.lng);
+
+                var contentWindow = makeContent(meetings[i]);
+
+                var marker = new google.maps.Marker({
+                    position: myLatLng,
+                    map: map,
+                    title: "Click for meeting info",
+                    content: contentWindow,
+                });
+
+                google.maps.event.addListener(marker, 'click', function() {
+                    infowindow.setContent(this.content);
+                    infowindow.open(map, this);
+                });
+            }
+        }
+        google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+</head>
+
+<body>
+    <div id="map-canvas"></div>
+</body>
+
+</html>

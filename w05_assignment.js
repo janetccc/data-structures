@@ -13,6 +13,8 @@ var apiKey = process.env.API_KEY;
 var meetingsData = [];
 var count = 0;
 
+var allZone = [];
+var meetingAmounts = [];
 var locationName = [];
 var groupName = [];
 var geoCode = [];
@@ -37,20 +39,33 @@ var zoneFile = root + 'data/aameeting' + zone + 'M.txt';
 var content = fs.readFileSync(zoneFile);
 var $ = cheerio.load(content);
 
-parseData();
+async.waterfall([
+    parseData,
+    getGeoData,
 
-function parseData() {
+    createFinalObject   
+], function (err, result) {
+	console.log('groups:' + meetingAmounts); 
+    console.log('!!!completed all!!!');        
+});
+
+// function clearBackslash(input){
+// 	var result = JSON.stringify(input[0]);
+// 	console.log(result);
+// 	result = result.replace(/\"/g, '"');
+// 	result = result.replace(/\\/g, '');
+// 	input = result;
+// }
+
+function parseData(callback) {
     async.waterfall([
         createURL,
         createFileNames,
         getMeetingFromSite, //GETTING ALL RAW DATA FROM WEBSITE TO TXT
-        parseZones,
-        // cleanData,  //get data ready for mongo
-        createFinalObject
-    ], function (err, result) {
-    // result now equals 'done' 
-        console.log('!!!completed part 1!!!');
-        
+        parseZones
+    ], function (err, result) { 
+        console.log('!!!completed part 1!!!'); 
+        callback();       
     });
 }
 
@@ -62,15 +77,14 @@ function parseZones (callback) {
 
         //cleaning data
         getTextData();
-        getGeoData();
+        meetingAmounts.push(groupName.length);
         console.log('zone: ' + zone + '; number of meetings: ' + groupName.length);
-        // console.log(zipcode);
         getMeetingSection();
-        inputData();
-        clearContainers();
+        // inputData();
+ 
         //continue to next zone
         if (zone >= 10 ) {
-            zone = 10
+            zone = 10;
         } else if (zone <= 10) {
             zone++;
         }
@@ -83,6 +97,17 @@ function parseZones (callback) {
         callback();
     });
 }
+
+// function sectionOut() {
+// 	async.waterfall([
+//         getGeoData,
+//         // cleanData,  //get data ready for mongo
+//         createFinalObject
+//     ], function (err, result) {
+//     // result now equals 'done' 
+//         console.log('!!!completed part 1!!!');        
+//     });
+// }
 
 function createURL (callback) { //create URL of aa website
     for (var i = 1; i < 11; i++) { 
@@ -126,25 +151,9 @@ function getMeetingFromSite (callback) { //get all meeting info from aa website
     }
 }
 
-function clearContainers () {
-    locationName = [];
-    groupName = [];
-    geoCode = [];
-    addressLine1 = [];
-    addressLine1Detail = [];
-    addressLine2 = [];
-    zipcode = [];
-    meetingNotes = [];
-    meetingAccess = [];
-    meetingStartTime = [];
-    meetingEndTime = [];
-    meetingDay = [];
-    meetingType = [];
-    meetingInterest = [];
-}
-
 function getGeoData (callback) {
     async.eachSeries(addressLine1, function(value, callback) {
+    	// console.log('in get geo data ' + addressLine1.length);
         var apiRequest = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + value.split(' ').join('+') + '&key=' + apiKey;
         var thisMeeting = new Object;
         thisMeeting.address = value;
@@ -155,24 +164,24 @@ function getGeoData (callback) {
             count = count + 1;
             console.log('Loading: '+count+'/'+groupName.length);
         });
-        setTimeout(callback, 2000);
+        setTimeout(callback, 500);
     }, function() {
         geoCode.push(meetingsData);
         console.log('obtained geoCode');
+        separateGeoCode(geoCode);
+        callback();
         fs.writeFileSync(root + 'data/meetings_geodataFull.txt', JSON.stringify(geoCode));
         // console.log('--file updated: meetingsData > meetings_geodataFull.txt');
-        // callback();
     });
 }
 
-function getTextData (callback) {
+function getTextData () {
     getMeetingLocationName();
     getMeetingNotes();
     getMeetingGroupName();
     getMeetingAddress();
     getMeetingDay();
     getMeetingAccess();
-    // callback();
 }
 
 function getMeetingLocationName () {
@@ -228,10 +237,11 @@ function getMeetingGroupName () {
         }
         
         groupName.push(finalData);
+        allZone.push(zone);
     });
 }
 
-function getMeetingAddress () {
+function getMeetingAddress (callback) {
     //parse all data
     $('tbody').find('tr').each(function(a, elem){
         var rawData = [];
@@ -493,14 +503,29 @@ function findTargetLocation (string, target) {
     return indexContainer;
 }
 
+var separatedGeoCode = [];
+
+function separateGeoCode(input){
+	var text = [];
+	text.push(JSON.stringify(input));
+	var step1 = text[0];
+	for (var i = 0; i < 371; i++) { 
+		cleanUp1 = step1.split(',')[i].replace('}]]', '').replace('[[{', '');
+		separatedGeocode.push(cleanUp1);	
+	}
+	console.log(separatedGeoCode[0]);
+	console.log(separatedGeoCode[2]);
+}
+
 function inputData (callback){ 
     var meeting = {};
-    var meetingContainer = []
+    var meetingContainer = [];
     for (var i = 0; i < groupName.length; i++) { 
-        meeting.zone = zone;
+        meeting.zone = allZone[i];
         meeting.locationName = locationName[i];
         meeting.groupName = groupName[i];
-        meeting.latLong = geoCode[i];
+        // meeting.latLong = geoCode[i];
+        meeting.geoCode = separatedGeoCode[i];
         meeting.addressLine1 = addressLine1[i];
         meeting.addressLine1Detail = addressLine1Detail[i];
         meeting.addressLine2 = addressLine2[i];
@@ -511,13 +536,15 @@ function inputData (callback){
         meetingContainer.push(JSON.stringify(meeting));
     }
     // console.log('meeting container: ' + meetingContainer);
+    // meetingContainer.replace('/', '');
     finalObject.push(meetingContainer);
     // console.log('finalObject: ' + finalObject);
     // callback();
 }
 
 function createFinalObject(callback) {
-    // inputData();
+    inputData();
+    // clearBackslash(finalObject);
     fs.writeFileSync(root + 'data/sortedMeetingsAll.txt', JSON.stringify(finalObject));
     console.log('--file updated: finalObject > sortedMeetingsAll.txt');
     callback();

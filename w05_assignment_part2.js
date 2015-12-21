@@ -1,8 +1,8 @@
 var fs = require('fs');
 
-var meetingAddress = JSON.parse(fs.readFileSync('/home/ubuntu/workspace/data/sortedMeetings02M.txt'));
+var meetingAddress = JSON.parse(fs.readFileSync('/home/ubuntu/workspace/data/cleanedMeetingsAll.txt'));
 var dbName = 'aa';
-var collName = 'area02M';
+var collName = 'meetings';
 
 // Connection URL
 var url = 'mongodb://' + process.env.IP + ':27017/' + dbName;
